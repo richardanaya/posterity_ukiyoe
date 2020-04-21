@@ -1,8 +1,13 @@
 [package]
 name = "ukiyoe"
-version = "0.1.0"
-authors = ["Patrick Walton <pcwalton@mimiga.net>"]
+version = "0.0.0"
+authors = ["Richard Anaya"]
 edition = "2018"
+description = "A flexbox gpu GUI library"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/richardanaya/ukiyoe"
+readme="README.md"
+
 
 [dependencies]
 stretch = "0.3.2"
