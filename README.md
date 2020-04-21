@@ -2,6 +2,7 @@
 
 A proof of concept GUI library using Pathfinder 3 and Stretch flexbox layout.
 
+** this library is super experimental and in progress **
 
 # Example
 
