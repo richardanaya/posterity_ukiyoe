@@ -4,18 +4,18 @@ use crate::rect::*;
 use crate::traits::*;
 
 struct Panel {
-	children: Vec<Box<UIElement>>,
+	children: Vec<Box<dyn UIElement>>,
 	position: Point,
 	desired_size: Size,
 	actual_size: Size
 }
 
 impl UIElement for Panel {
-	fn get_children(&self) -> &Vec<Box<UIElement>> {
+	fn get_children(&self) -> &Vec<Box<dyn UIElement>> {
 		return &self.children;
 	}
 
-	fn render(&self, renderer: &Renderer) {
+	fn render(&self, renderer: &dyn Renderer) {
 		let rect = Rect::new();
 		renderer.draw_rectange(rect);
 	}
@@ -38,8 +38,8 @@ impl Panel {
 	fn layout(&mut self, _available_size: Size)
 	{
 		for child in &self.children {
-			self.desired_size = self.measure(_available_size);
-			self.actual_size = self.arrange(self.desired_size);
+			self.desired_size = child.measure(_available_size);
+			self.actual_size = child.arrange(self.desired_size);
 		}
 	}
 }

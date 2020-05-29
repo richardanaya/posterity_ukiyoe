@@ -8,8 +8,8 @@ pub trait MeasureArrange {
 }
 
 pub trait UIElement {
-	fn get_children(&self) -> &Vec<Box<UIElement>>;
-	fn render(&self, renderer: &Renderer);
+	fn get_children(&self) -> &Vec<Box<dyn UIElement>>;
+	fn render(&self, renderer: &dyn Renderer);
 }
 
 pub trait Renderer{
