@@ -8,7 +8,7 @@ impl Size {
 	pub fn new() -> Self {
 		Size { width: 0.0, height: 0.0 }
 	}
-		fn from_width_height(w:f64, h:f64) -> Self {
+	pub fn from_width_height(w:f64, h:f64) -> Self {
 		Size { width: w, height: h }
 	}
 }

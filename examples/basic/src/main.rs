@@ -10,7 +10,7 @@ fn main() {
     root.layout(available_area);
 
     let silly_console_renderer = SillyConsoleRenderer::new();
-    root.render(silly_console_renderer);
+    root.render(&silly_console_renderer);
 
     // TODO Write me
 /*    loop {

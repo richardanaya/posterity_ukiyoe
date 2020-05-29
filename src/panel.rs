@@ -3,7 +3,7 @@ use crate::point::*;
 use crate::rect::*;
 use crate::traits::*;
 
-struct Panel {
+pub struct Panel {
 	children: Vec<Box<dyn UIElement>>,
 	position: Point,
 	desired_size: Size,
@@ -11,7 +11,7 @@ struct Panel {
 }
 
 impl Panel {
-	fn new() -> Self {
+	pub fn new() -> Self {
 		Panel {
 			children: Vec::new(),
 			position: Point::new(),
@@ -20,11 +20,11 @@ impl Panel {
 		}
 	}
 
-	fn add_child(&mut self, c:impl UIElement + 'static) {
+	pub fn add_child(&mut self, c:impl UIElement + 'static) {
 	    self.children.push(Box::new(c));
 	}
 
-	fn layout(&mut self, _available_size: Size)
+	pub fn layout(&mut self, _available_size: Size)
 	{
 		for child in &self.children {
 			self.desired_size = child.measure(_available_size);

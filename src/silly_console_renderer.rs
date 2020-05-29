@@ -2,12 +2,12 @@ use crate::rect::*;
 use crate::point::*;
 use crate::traits::*;
 
-struct SillyConsoleRenderer {
+pub struct SillyConsoleRenderer {
 
 }
 
 impl SillyConsoleRenderer {
-	fn new() -> Self {
+	pub fn new() -> Self {
 		SillyConsoleRenderer {
 		}
 	}
