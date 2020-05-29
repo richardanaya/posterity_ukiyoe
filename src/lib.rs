@@ -13,6 +13,9 @@ pub use self::traits::*;
 mod panel;
 pub use self::panel::*;
 
+mod textbox;
+pub use self::textbox::*;
+
 mod silly_console_renderer;
 pub use self::silly_console_renderer::*;
 
