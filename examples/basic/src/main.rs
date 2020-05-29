@@ -1,18 +1,19 @@
 use ukiyoe::*;
 
 fn main() {
-    let mut window = Window::new();
-    let mut b1 = Button::new("a");
-    let b2 = Button::new("b");
-    let mut b3 = Button::new("c");
-    let b4 = Button::new("d");
-    let b5 = Button::new("e");
-    b1.add_child(Box::new(b2));
-    b3.add_child(Box::new(b4));
-    b3.add_child(Box::new(b5));
-    b1.add_child(Box::new(b3));
-    window.set_content(Box::new(b1));
-    loop {
+    let mut root = Panel::new();
+    root.add_child(Panel::new());
+    root.add_child(Panel::new());
+    root.add_child(Panel::new());
+
+    let available_area = Size::from_width_height(1000.0, 800.0);
+    root.layout(available_area);
+
+    let silly_console_renderer = SillyConsoleRenderer::new();
+    root.render(silly_console_renderer);
+
+    // TODO Write me
+/*    loop {
         let event = window.next_event();
         match event {
             WindowEvent::Exit => return,
@@ -20,4 +21,5 @@ fn main() {
         }
         window.render();
     }
+*/
 }
