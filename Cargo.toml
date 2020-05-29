@@ -1,9 +1,9 @@
 [package]
 name = "ukiyoe"
 version = "0.0.0"
-authors = ["Richard Anaya"]
+authors = ["Richard Anaya","Darryl Agostinelli"]
 edition = "2018"
-description = "A flexbox gpu GUI library"
+description = "A renderer agnostic GUI library"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/richardanaya/ukiyoe"
 readme="README.md"
@@ -11,15 +11,3 @@ readme="README.md"
 
 [dependencies]
 stretch = "0.3.2"
-gl = "0.14"
-sdl2 = "0.33"
-sdl2-sys = "0.33"
-pathfinder_canvas = "0"
-pathfinder_color = "0"
-pathfinder_content = "0"
-pathfinder_geometry = "0"
-pathfinder_gl = "0"
-pathfinder_gpu = "0"
-pathfinder_renderer = "0"
-pathfinder_resources = "0"
-lazy_static = "1"
