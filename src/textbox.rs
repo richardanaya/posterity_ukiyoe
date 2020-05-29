@@ -55,7 +55,6 @@ impl UIElement for TextBox {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		let rect = Rect::new();
-		renderer.draw_rectange(rect);
+		print!("{:?}", self.text);
 	}
 }

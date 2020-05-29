@@ -27,6 +27,7 @@ impl Panel {
 	pub fn layout(&mut self, _available_size: Size)
 	{
 		for child in &self.children {
+			child.layout(_available_size);
 			self.desired_size = child.measure(_available_size);
 			self.actual_size = child.arrange(self.desired_size);
 		}
@@ -49,7 +50,10 @@ impl UIElement for Panel {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		let rect = Rect::new();
-		renderer.draw_rectange(rect);
+		println!("==PANEL START==");
+		for child in &self.children {
+			child.render(renderer);
+		}
+		println!("==PANEL END==");
 	}
 }
