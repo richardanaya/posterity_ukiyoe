@@ -35,7 +35,7 @@ impl Panel {
 	    self.children.push(Box::new(c));
 	}
 
-	fn layout(&self, _available_size: Size)
+	fn layout(&mut self, _available_size: Size)
 	{
 		for child in &self.children {
 			self.desired_size = self.measure(_available_size);
