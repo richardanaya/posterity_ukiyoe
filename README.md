@@ -1,4 +1,6 @@
-# Ukiyoe
+# ukiyoe
+
+<a href="https://docs.rs/ukiyoe"><img src="https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square" alt="docs.rs docs" /></a>
 
 A proof of concept GUI framework.  Plugin your own renderer!
 
