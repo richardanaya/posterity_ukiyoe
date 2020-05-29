@@ -1,6 +1,6 @@
 # Ukiyoe
 
-A proof of concept GUI library using [Pathfinder 3](https://github.com/servo/pathfinder) and [Stretch flexbox layout](https://github.com/vislyhq/stretch).
+A proof of concept GUI framework.  Plugin your own renderer!
 
 **this library is super experimental and in progress**
 
