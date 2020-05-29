@@ -10,17 +10,6 @@ struct Panel {
 	actual_size: Size
 }
 
-impl UIElement for Panel {
-	fn get_children(&self) -> &Vec<Box<dyn UIElement>> {
-		return &self.children;
-	}
-
-	fn render(&self, renderer: &dyn Renderer) {
-		let rect = Rect::new();
-		renderer.draw_rectange(rect);
-	}
-}
-
 impl Panel {
 	fn new() -> Self {
 		Panel {
@@ -44,7 +33,7 @@ impl Panel {
 	}
 }
 
-impl MeasureArrange for Panel {
+impl UIElement for Panel {
 	fn get_desired_size(&self) -> &Size
 	{
 		return &self.desired_size;
@@ -54,5 +43,13 @@ impl MeasureArrange for Panel {
 	}
 	fn arrange(&self, _final_size: Size) -> Size {
 		return _final_size;
+	}
+	fn get_children(&self) -> &Vec<Box<dyn UIElement>> {
+		return &self.children;
+	}
+
+	fn render(&self, renderer: &dyn Renderer) {
+		let rect = Rect::new();
+		renderer.draw_rectange(rect);
 	}
 }
