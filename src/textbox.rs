@@ -57,4 +57,9 @@ impl UIElement for TextBox {
 	fn render(&self, renderer: &dyn Renderer) {
 		print!("{:?}", self.text);
 	}
+
+	// code smell
+	fn layout(&mut self, _available_size: Size) {
+		// do nothing - code smell
+	}
 }

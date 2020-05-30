@@ -23,15 +23,6 @@ impl Panel {
 	pub fn add_child(&mut self, c:impl UIElement + 'static) {
 	    self.children.push(Box::new(c));
 	}
-
-	pub fn layout(&mut self, _available_size: Size)
-	{
-		for child in &self.children {
-			child.layout(_available_size);
-			self.desired_size = child.measure(_available_size);
-			self.actual_size = child.arrange(self.desired_size);
-		}
-	}
 }
 
 impl UIElement for Panel {
@@ -55,5 +46,14 @@ impl UIElement for Panel {
 			child.render(renderer);
 		}
 		println!("==PANEL END==");
+	}
+
+	fn layout(&mut self, _available_size: Size)
+	{
+		for mut child in self.get_children() {
+			child.layout(_available_size);
+			self.desired_size = child.measure(_available_size);
+			self.actual_size = child.arrange(self.desired_size);
+		}
 	}
 }

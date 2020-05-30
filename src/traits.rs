@@ -7,6 +7,9 @@ pub trait UIElement {
 	fn get_desired_size(&self) -> &Size;
 	fn measure(&self, _available_size: Size) -> Size;
 	fn arrange(&self, _final_size: Size) -> Size;
+
+	// code smell
+	fn layout(&mut self, _available_size: Size);
 }
 
 pub trait Renderer{
