@@ -23,10 +23,12 @@ fn main() {
 
     root.add_child(m);
 
-    // TODO Write me
-    let silly_console_renderer = SillyConsoleRenderer::new();
+    let renderer = CursesRenderer::new();
     loop {
-        println!("some how clear screen");
-        root.render(&silly_console_renderer);
+        // if escape pressed
+        if renderer.getch() == Some(Input::Character('\u{1b}')) {
+            break;
+        }
+        root.render(&renderer);
     }
 }
