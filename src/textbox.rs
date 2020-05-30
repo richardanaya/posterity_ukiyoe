@@ -49,8 +49,8 @@ impl UIElement for TextBox {
 	fn arrange(&self, _final_size: Size) -> Size {
 		return _final_size;
 	}
-	fn get_children(&self) -> &Vec<Box<dyn UIElement>> {
-		return &self.children;
+	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
+		return &mut self.children;
 	}
 
 	fn render(&self, _renderer: &dyn Renderer) {

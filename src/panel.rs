@@ -35,8 +35,8 @@ impl UIElement for Panel {
 	fn arrange(&self, _final_size: Size) -> Size {
 		return _final_size;
 	}
-	fn get_children(&self) -> &Vec<Box<dyn UIElement>> {
-		return &self.children;
+	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
+		return &mut self.children;
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
@@ -49,10 +49,11 @@ impl UIElement for Panel {
 
 	fn layout(&mut self, _available_size: Size)
 	{
-		for child in self.get_children() {
-			child.layout(_available_size);
-			self.desired_size = child.measure(_available_size);
-			self.actual_size = child.arrange(self.desired_size);
+		let len = self.get_children().len();
+		if len > 0 {
+			let size = self.get_children()[0].measure(_available_size);
+			self.desired_size = size;
+			self.actual_size = self.get_children()[0].arrange(size);
 		}
 	}
 }
