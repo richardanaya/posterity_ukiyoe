@@ -1,5 +1,7 @@
 .PHONY: build lint test clean
 
+.default: build
+
 build:
 	cargo build
 

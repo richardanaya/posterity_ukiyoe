@@ -7,16 +7,21 @@ EXAMPLES := $(wildcard examples/*)
 ############## PROJECT TOP LEVEL ##############
 
 build: build-ukiyoe $(EXAMPLES)
-	$(MAKE) -C $(EXAMPLES) build
 
 lint: lint-ukiyoe
-	$(MAKE) -C $(EXAMPLES) lint
+	for dir in $(EXAMPLES); do \
+		$(MAKE) -C $$dir lint; \
+	done
 
 test: test-ukiyoe
-	$(MAKE) -C $(EXAMPLES) test
+	for dir in $(EXAMPLES); do \
+		$(MAKE) -C $$dir test; \
+	done
 
 clean: clean-ukiyoe
-	$(MAKE) -C $(EXAMPLES) clean
+	for dir in $(EXAMPLES); do \
+		$(MAKE) -C $$dir clean; \
+	done
 
 ############## UKIYOE TOP LEVEL ##############
 
@@ -35,7 +40,7 @@ clean-ukiyoe:
 ############## EXAMPLES ##############
 
 $(EXAMPLES): build-ukiyoe
-	$(MAKE) -C $@ build
+	$(MAKE) -C $@
 
 run-example-basic: build
 	$(MAKE) -C examples/basic run
