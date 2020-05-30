@@ -44,18 +44,36 @@ impl CursesRenderer {
     pub fn getch(&self) -> Option<Input> {
         self.window.getch()
     }
+
+    fn draw_character(&self, x: i32, y: i32, c: char) {
+        self.window.mvprintw(y, x, c.to_string());
+    }
 }
 
 impl Renderer for CursesRenderer {
     fn draw_rectangle(&self, r: Rect) {
-        self.window.printw("Hello Rust");
+        self.draw_character(r.position.x as i32, r.position.y as i32, 'x');
+        self.draw_character(
+            (r.position.x + r.size.width) as i32,
+            r.position.y as i32,
+            'x',
+        );
+        self.draw_character(
+            r.position.x as i32,
+            (r.position.y + r.size.height) as i32,
+            'x',
+        );
+        self.draw_character(
+            (r.position.x + r.size.width) as i32,
+            (r.position.y + r.size.height) as i32,
+            'x',
+        );
         self.window.refresh();
-        //window.getch();
     }
     fn get_dimensions(&self) -> Size {
         Size {
-            width: 100.0,
-            height: 100.0,
+            width: self.window.get_max_x() as f64,
+            height: self.window.get_max_y() as f64,
         }
     }
 }
