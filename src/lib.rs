@@ -16,8 +16,5 @@ pub use self::panel::*;
 mod textbox;
 pub use self::textbox::*;
 
-mod silly_console_renderer;
-pub use self::silly_console_renderer::*;
-
 #[cfg(test)]
 mod ukiyoe_test;
