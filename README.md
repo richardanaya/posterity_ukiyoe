@@ -50,3 +50,21 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in `ukiyoe` by you, as defined in the Apache-2.0 license, shall be
 dual licensed as above, without any additional terms or conditions.
+
+# Developer Notes
+
+To build the code, you may need to:
+```
+# write me -- what needs to be installed using stock Fedora?
+```
+
+To run the linter, you may need to:
+```
+# write me -- what needs to be installed using stock Fedora?
+```
+
+To run examples, you may need to:
+
+```
+sudo dnf install ncurses-devel
+```
