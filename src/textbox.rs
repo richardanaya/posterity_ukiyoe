@@ -1,6 +1,5 @@
 use crate::size::*;
 use crate::point::*;
-use crate::rect::*;
 use crate::traits::*;
 
 pub struct TextBox {
@@ -54,7 +53,7 @@ impl UIElement for TextBox {
 		return &self.children;
 	}
 
-	fn render(&self, renderer: &dyn Renderer) {
+	fn render(&self, _renderer: &dyn Renderer) {
 		print!("{:?}", self.text);
 	}
 

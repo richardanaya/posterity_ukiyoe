@@ -1,6 +1,5 @@
 use crate::size::*;
 use crate::point::*;
-use crate::rect::*;
 use crate::traits::*;
 
 pub struct Panel {
