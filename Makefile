@@ -2,7 +2,7 @@ EXAMPLES := $(wildcard examples/*)
 
 .default: build
 
-.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe $(EXAMPLES)
+.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe clean-ukiyoe $(EXAMPLES) run-example-basic run-example-rectangular
 
 ############## PROJECT TOP LEVEL ##############
 
