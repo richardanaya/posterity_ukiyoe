@@ -1,4 +1,5 @@
 use ukiyoe::*;
+use common::*;
 
 fn main() {
     let mut root = Panel::new();

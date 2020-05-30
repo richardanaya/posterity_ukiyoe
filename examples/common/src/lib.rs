@@ -1,6 +1,4 @@
-use crate::rect::*;
-use crate::point::*;
-use crate::traits::*;
+use ukiyoe::*;
 
 pub struct SillyConsoleRenderer {
 

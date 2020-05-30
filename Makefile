@@ -16,3 +16,4 @@ examples: build
 run-examples: examples
 	(cd examples/basic; cargo run)
 	(cd examples/console; cargo build)
+	(cd examples/basic_console; cargo build)
