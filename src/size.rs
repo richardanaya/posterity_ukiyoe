@@ -1,7 +1,7 @@
 #[derive(Copy, Clone)]
 pub struct Size {
-	width: f64,
-	height: f64
+	pub width: f64,
+	pub height: f64
 }
 
 impl Size {

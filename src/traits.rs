@@ -13,8 +13,8 @@ pub trait UIElement {
 }
 
 pub trait Renderer{
-	fn draw_rectange(&self, r:Rect);
-
+	fn draw_rectangle(&self, r:Rect);
+	fn get_dimensions(&self) -> Size;
 	// Future
 	// fn draw_ellipse(&self);
 	// fn draw_triangle(&self);
