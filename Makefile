@@ -1,19 +1,44 @@
-.PHONY: build lint test examples run-examples
+EXAMPLES := $(wildcard examples/*)
 
-build:
+.default: build
+
+.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe $(EXAMPLES)
+
+############## PROJECT TOP LEVEL ##############
+
+build: build-ukiyoe $(EXAMPLES)
+	$(MAKE) -C $(EXAMPLES) clean
+
+lint: lint-ukiyoe
+	$(MAKE) -C $(EXAMPLES) clean
+
+test: test-ukiyoe
+	$(MAKE) -C $(EXAMPLES) clean
+
+clean: clean-ukiyoe
+	$(MAKE) -C $(EXAMPLES) clean
+
+############## UKIYOE TOP LEVEL ##############
+
+build-ukiyoe:
 	cargo build
 
-lint:
+lint-ukiyoe:
 	cargo fmt
 
-test:
+test-ukiyoe:
 	cargo test
 
-examples: build
-	(cd examples/basic; cargo build)
-	(cd examples/common; cargo build)
-	(cd examples/basic_console; cargo build)
+clean-ukiyoe:
+	cargo clean
 
-run-examples: examples
+############## EXAMPLES ##############
+
+$(EXAMPLES): build-ukiyoe
+	$(MAKE) -C $@ build
+
+run-example-basic: build
 	(cd examples/basic; cargo run)
-	#(cd examples/basic_console; cargo run)
+
+run-example-rectangular: build
+	(cd examples/rectangular; cargo run)
