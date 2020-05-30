@@ -16,5 +16,14 @@ pub use self::panel::*;
 mod textbox;
 pub use self::textbox::*;
 
+mod label;
+pub use self::label::*;
+
+mod hbox;
+pub use self::hbox::*;
+
+mod vbox;
+pub use self::vbox::*;
+
 #[cfg(test)]
 mod ukiyoe_test;

@@ -2,9 +2,9 @@ use ukiyoe::*;
 use common::*;
 
 fn main() {
-    let mut root = Panel::new();
+    let mut root = VBox::new();
 
-    let mut tb1 = TextBox::new();
+    let mut tb1 = Label::new();
     tb1.set_text(&String::from("mary had a little lamb"));
     root.add_child(tb1);
 
@@ -12,7 +12,7 @@ fn main() {
     tb2.set_text(&String::from("who's fleece was white as snow"));
     root.add_child(tb2);
 
-    let mut m = Panel::new();
+    let mut m = HBox::new();
 
     let mut tb3 = TextBox::new();
     tb3.set_text(&String::from("and everywhere that mary went"));
