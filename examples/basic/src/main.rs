@@ -2,7 +2,7 @@ use ukiyoe::*;
 use common::*;
 
 fn main() {
-    let mut root = VBox::new();
+    /*let mut root = VBox::new();
 
     let mut tb1 = Label::new();
     tb1.set_text(&String::from("mary had a little lamb"));
@@ -30,5 +30,5 @@ fn main() {
             break;
         }
         root.render(&renderer);
-    }
+    }*/
 }

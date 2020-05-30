@@ -1,16 +1,15 @@
 use crate::rect::*;
 use crate::size::*;
+use std::rc::Rc;
+use std::cell::RefCell;
+use shoji::*;
 
 pub trait UIElement {
 	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>>;
 	fn render(&self, renderer: &dyn Renderer);
-	fn get_desired_area(&self) -> &Rect;
-	fn get_actual_area(&self) -> &Rect;
-	fn measure(&self, _available_area: &Rect) -> &Rect;
-	fn arrange(&self, _final_area: &Rect) -> &Rect;
-
-	// code smell
-	fn layout(&mut self, _available_area: &Rect);
+	fn attach_layout(&mut self,_layout_manager:Rc<RefCell<Shoji>>) {
+		panic!("this should be implemented")
+	}
 }
 
 pub trait Renderer{

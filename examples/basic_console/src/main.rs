@@ -1,15 +1,27 @@
 use ukiyoe::*;
 use common::*;
+use shoji::*;
+use std::rc::Rc;
+use std::cell::RefCell;
 
 struct TextWindow {
-    root: Option<Box<UIElement>>,
-    text_renderer: SillyConsoleRenderer
+    root: Option<Box<dyn UIElement>>,
+    renderer: CursesRenderer,
+    layout_manager:Rc<RefCell<shoji::Shoji>>,
+    layout_node:shoji::NodeIndex,
 }
 impl TextWindow {
    fn new() -> Self {
+      let mut shoji = Shoji::new();
+      let root_node = shoji.new_node(
+         LayoutStyle { ..Default::default() },
+         vec![],
+     ).unwrap();
       TextWindow {
          root:None,
-         text_renderer:SillyConsoleRenderer::new()
+         renderer: CursesRenderer::new(),
+         layout_manager: Rc::new(RefCell::new(shoji)),
+         layout_node: root_node
       }
    }
    fn set_child(&mut self, root:impl UIElement + 'static){
@@ -18,8 +30,13 @@ impl TextWindow {
 
    fn render(&self){
       if let Some(r) = &self.root {
-         r.render(&self.text_renderer)
+         r.render(&self.renderer)
       }
+   }
+
+   fn compute_layout(&self) {
+      let dim = self.renderer.get_dimensions();
+      self.layout_manager.borrow_mut().compute_layout(self.layout_node,LayoutSize::new(dim.width, dim.height)).unwrap();
    }
 }
 
@@ -30,7 +47,7 @@ fn main() {
     //panel.add_child(label);
     window.set_child(panel);
     loop {
-      println!("some how clear screen");
-       window.render();
+      window.compute_layout();
+      window.render();
     }
 }

@@ -30,7 +30,7 @@ impl CursesRenderer {
 }
 
 impl Renderer for CursesRenderer {
-    fn draw_rectangle(&self, r: Rect) {
+    fn draw_rectangle(&self, r: &Rect) {
 		let start_x = r.position.x as i32;
 		let end_x = (r.position.x + r.size.width) as i32;
 		let start_y = r.position.y as i32;
@@ -57,12 +57,13 @@ impl Renderer for CursesRenderer {
             height: self.window.get_max_y() as f64,
         }
     }
-    fn draw_text(&self, r: Rect, text:&String) {
+    fn draw_text(&self, r: &Rect, text:&String) {
         let start_x = r.position.x as i32;
         let end_x = (r.position.x + r.size.width) as i32;
         let start_y = r.position.y as i32;
+        let chars:Vec<char> = text.chars().collect();
         for x in start_x..=end_x {
-            self.draw_character(x as i32, start_y, text[0]);
+            self.draw_character(x as i32, start_y, chars[x as usize]);
         }
     }
 }

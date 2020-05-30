@@ -9,7 +9,7 @@ impl SillyConsoleRenderer {
 }
 
 impl Renderer for SillyConsoleRenderer {
-    fn draw_rectangle(&self, r: Rect) {
+    fn draw_rectangle(&self, r: &Rect) {
         println!("look ma! no hands!");
         println!("{:?}", r.position.x);
     }
@@ -19,7 +19,7 @@ impl Renderer for SillyConsoleRenderer {
             height: 100.0,
         }
     }
-    fn draw_text(&self, _r: Rect, text:&String) {
+    fn draw_text(&self, _r: &Rect, text:&String) {
         println!("{:?}", text);
     }
 }

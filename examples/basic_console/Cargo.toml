@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 ukiyoe = {path="../../"}
 common = {path="../common"}
+shoji = "0.0.3"

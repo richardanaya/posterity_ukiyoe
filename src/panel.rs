@@ -1,18 +1,21 @@
 use crate::rect::*;
 use crate::traits::*;
+use std::rc::Rc;
+use std::cell::RefCell;
+use shoji::*;
 
 pub struct Panel {
 	children: Vec<Box<dyn UIElement>>,
-	desired_area: Rect,
-	actual_area: Rect,
+	layout_manager: Option<Rc<RefCell<shoji::Shoji>>>,
+	layout_node: Option<shoji::NodeIndex>
 }
 
 impl Panel {
 	pub fn new() -> Self {
 		Panel {
 			children: Vec::new(),
-			desired_area: Rect::new(),
-			actual_area: Rect::new()
+			layout_manager: None,
+			layout_node: None,
 		}
 	}
 
@@ -22,35 +25,21 @@ impl Panel {
 }
 
 impl UIElement for Panel {
-	fn get_desired_area(&self) -> &Rect
-	{
-		return &self.desired_area;
-	}
-	fn get_actual_area(&self) -> &Rect
-	{
-		return &self.actual_area;
-	}
-	fn measure(&self, _available_area: &Rect) -> &Rect {
-		return _available_area;
-	}
-	fn arrange(&self, _final_area: &Rect) -> &Rect {
-		return _final_area;
-	}
 	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
 		return &mut self.children;
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
+		let lm = self.layout_manager.as_ref().unwrap().borrow();
+		let Layout{x,y,w,h} = lm.get_layout(self.layout_node.unwrap()).unwrap();
+		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
 		for child in &self.children {
 			child.render(renderer);
 		}
 	}
 
-	fn layout(&mut self, _available_area: &Rect)
-	{
-		for child in &self.children {
-			self.desired_area = child.measure(_available_area);
-			self.actual_area = child.arrange(self.desired_area);
-		}
+	fn attach_layout(&mut self,layout_manager:Rc<RefCell<Shoji>>) {
+		self.layout_node = Some(layout_manager.borrow_mut().new_node(LayoutStyle::default(),Vec::new()).unwrap());
+		self.layout_manager = Some(layout_manager);
 	}
 }
