@@ -52,22 +52,22 @@ impl CursesRenderer {
 
 impl Renderer for CursesRenderer {
     fn draw_rectangle(&self, r: Rect) {
-        self.draw_character(r.position.x as i32, r.position.y as i32, 'x');
-        self.draw_character(
-            (r.position.x + r.size.width) as i32,
-            r.position.y as i32,
-            'x',
-        );
-        self.draw_character(
-            r.position.x as i32,
-            (r.position.y + r.size.height) as i32,
-            'x',
-        );
-        self.draw_character(
-            (r.position.x + r.size.width) as i32,
-            (r.position.y + r.size.height) as i32,
-            'x',
-        );
+		let start_x = r.position.x as i32;
+		let end_x = (r.position.x + r.size.width) as i32;
+		let start_y = r.position.y as i32;
+		let end_y = (r.position.y + r.size.height) as i32;
+		for x in start_x..=end_x {
+			self.draw_character(x, start_y,'x');	
+		}
+		for x in start_x..=end_x {
+			self.draw_character(x, end_y,'x');	
+		}
+		for y in start_y..=end_y {
+			self.draw_character(start_x, y,'x');	
+		}
+		for y in start_y..=end_y {
+			self.draw_character(end_x, y,'x');	
+		}
         self.window.refresh();
     }
     fn get_dimensions(&self) -> Size {
