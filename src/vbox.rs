@@ -6,16 +6,16 @@ use crate::traits::*;
 // VBox lays out its children in a single vertical column from top to bottom.
 // VBox will resize children to their desired heights but constrain the width to the parent container width.
 
-pub struct HBox {
+pub struct VBox {
 	children: Vec<Box<dyn UIElement>>,
 	position: Point,
 	desired_size: Size,
 	actual_size: Size
 }
 
-impl HBox {
+impl VBox {
 	pub fn new() -> Self {
-		HBox {
+		VBox {
 			children: Vec::new(),
 			position: Point::new(),
 			desired_size: Size::new(),
@@ -28,7 +28,7 @@ impl HBox {
 	}
 }
 
-impl UIElement for HBox {
+impl UIElement for VBox {
 	fn get_desired_size(&self) -> &Size
 	{
 		return &self.desired_size;
@@ -44,11 +44,11 @@ impl UIElement for HBox {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		println!("==HBox START==");
+		println!("==VBox START==");
 		for child in &self.children {
 			child.render(renderer);
 		}
-		println!("==HBox END==");
+		println!("==VBox END==");
 	}
 
 	fn layout(&mut self, _available_size: Size)
