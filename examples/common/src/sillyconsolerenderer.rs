@@ -19,5 +19,8 @@ impl Renderer for SillyConsoleRenderer {
             height: 100.0,
         }
     }
+    fn draw_text(&self, _r: Rect, text:&String) {
+        println!("{:?}", text);
+    }
 }
 

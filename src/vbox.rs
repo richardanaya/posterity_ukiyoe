@@ -1,5 +1,4 @@
-use crate::size::*;
-use crate::point::*;
+use crate::rect::*;
 use crate::traits::*;
 
 // VBox
@@ -8,18 +7,16 @@ use crate::traits::*;
 
 pub struct VBox {
 	children: Vec<Box<dyn UIElement>>,
-	position: Point,
-	desired_size: Size,
-	actual_size: Size
+	desired_area: Rect,
+	actual_area: Rect
 }
 
 impl VBox {
 	pub fn new() -> Self {
 		VBox {
 			children: Vec::new(),
-			position: Point::new(),
-			desired_size: Size::new(),
-			actual_size: Size::new()
+			desired_area: Rect::new(),
+			actual_area: Rect::new()
 		}
 	}
 
@@ -29,35 +26,35 @@ impl VBox {
 }
 
 impl UIElement for VBox {
-	fn get_desired_size(&self) -> &Size
+	fn get_desired_area(&self) -> &Rect
 	{
-		return &self.desired_size;
+		return &self.desired_area;
 	}
-	fn measure(&self, _available_size: Size) -> Size {
-		return _available_size;
+	fn get_actual_area(&self) -> &Rect
+	{
+		return &self.actual_area;
 	}
-	fn arrange(&self, _final_size: Size) -> Size {
-		return _final_size;
+	fn measure(&self, _available_area: &Rect) -> &Rect {
+		return _available_area;
+	}
+	fn arrange(&self, _final_area: &Rect) -> &Rect {
+		return _final_area;
 	}
 	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
 		return &mut self.children;
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		println!("==VBox START==");
 		for child in &self.children {
 			child.render(renderer);
 		}
-		println!("==VBox END==");
 	}
 
-	fn layout(&mut self, _available_size: Size)
+	fn layout(&mut self, _available_area: &Rect)
 	{
-		let len = self.get_children().len();
-		if len > 0 {
-			let size = self.get_children()[0].measure(_available_size);
-			self.desired_size = size;
-			self.actual_size = self.get_children()[0].arrange(size);
+		for child in &self.children {
+			self.desired_area = child.measure(&_available_area);
+			self.actual_area = child.arrange(&self.desired_area);
 		}
 	}
 }

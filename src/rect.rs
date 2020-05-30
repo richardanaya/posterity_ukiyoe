@@ -7,7 +7,14 @@ pub struct Rect {
 }
 
 impl Rect {
-    pub fn new(x:f64,y:f64,w:f64,h:f64) -> Self {
+    pub fn new() -> Self {
+        Rect {
+                position: Point::new(),
+                size: Size::new()
+            }
+    }
+    // todo rename me
+    pub fn from_numbers(x:f64,y:f64,w:f64,h:f64) -> Self {
 	    let mut r = Rect {
 	            position: Point::new(),
 	            size: Size::new()

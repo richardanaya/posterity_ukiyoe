@@ -47,12 +47,22 @@ impl Renderer for CursesRenderer {
 		for y in start_y..=end_y {
 			self.draw_character(end_x, y,'x');
 		}
+
+        // code smell
         self.window.refresh();
     }
     fn get_dimensions(&self) -> Size {
         Size {
             width: self.window.get_max_x() as f64,
             height: self.window.get_max_y() as f64,
+        }
+    }
+    fn draw_text(&self, r: Rect, text:&String) {
+        let start_x = r.position.x as i32;
+        let end_x = (r.position.x + r.size.width) as i32;
+        let start_y = r.position.y as i32;
+        for x in start_x..=end_x {
+            self.draw_character(x as i32, start_y, text[0]);
         }
     }
 }
