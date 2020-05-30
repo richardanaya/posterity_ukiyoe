@@ -23,17 +23,10 @@ fn main() {
 
     root.add_child(m);
 
-    let silly_console_renderer = SillyConsoleRenderer::new();
-    root.render(&silly_console_renderer);
-
     // TODO Write me
-/*    loop {
-        let event = window.next_event();
-        match event {
-            WindowEvent::Exit => return,
-            _ => {},
-        }
-        window.render();
+    let silly_console_renderer = SillyConsoleRenderer::new();
+    loop {
+        println!("some how clear screen");
+        root.render(&silly_console_renderer);
     }
-*/
 }

@@ -11,9 +11,9 @@ test:
 
 examples: build
 	(cd examples/basic; cargo build)
-	(cd examples/console; cargo build)
+	(cd examples/common; cargo build)
+	(cd examples/basic_console; cargo build)
 
 run-examples: examples
 	(cd examples/basic; cargo run)
-	(cd examples/console; cargo build)
-	(cd examples/basic_console; cargo build)
+	#(cd examples/basic_console; cargo run)

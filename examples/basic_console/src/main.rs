@@ -30,6 +30,7 @@ fn main() {
     //panel.add_child(label);
     window.set_child(panel);
     loop {
+      println!("some how clear screen");
        window.render();
     }
 }
