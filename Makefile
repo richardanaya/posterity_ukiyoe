@@ -7,13 +7,13 @@ EXAMPLES := $(wildcard examples/*)
 ############## PROJECT TOP LEVEL ##############
 
 build: build-ukiyoe $(EXAMPLES)
-	$(MAKE) -C $(EXAMPLES) clean
+	$(MAKE) -C $(EXAMPLES) build
 
 lint: lint-ukiyoe
-	$(MAKE) -C $(EXAMPLES) clean
+	$(MAKE) -C $(EXAMPLES) lint
 
 test: test-ukiyoe
-	$(MAKE) -C $(EXAMPLES) clean
+	$(MAKE) -C $(EXAMPLES) test
 
 clean: clean-ukiyoe
 	$(MAKE) -C $(EXAMPLES) clean
