@@ -49,7 +49,7 @@ impl UIElement for Panel {
 
 	fn layout(&mut self, _available_size: Size)
 	{
-		for mut child in self.get_children() {
+		for child in self.get_children() {
 			child.layout(_available_size);
 			self.desired_size = child.measure(_available_size);
 			self.actual_size = child.arrange(self.desired_size);
