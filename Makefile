@@ -38,7 +38,7 @@ $(EXAMPLES): build-ukiyoe
 	$(MAKE) -C $@ build
 
 run-example-basic: build
-	(cd examples/basic; cargo run)
+	$(MAKE) -C examples/basic run
 
 run-example-rectangular: build
-	(cd examples/rectangular; cargo run)
+	$(MAKE) -C examples/rectangular run
