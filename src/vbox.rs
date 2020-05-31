@@ -56,20 +56,25 @@ impl UIElement for VBox {
 
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-			let layout_manager = layout_manager.expect("should have layout manager");
-			// copy the ref counted layout manager
-			self.layout_manager = Some(layout_manager.clone());
-			// get a mutable ref of the ref counted layout manager
-			let mut lm = layout_manager.borrow_mut();
-			// create a new node for the panel
-			self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
-			// get the layout node of of the parent 
-			let parent = lm.get_node(parent_node.expect("should have parent_node"));
-			// add a NodeIndex to the parent of this Panel's node
-			parent.children.push(*self.layout_node.as_ref().expect("layout node should exist"));
+			
+			{
+				let lm_ref = layout_manager.as_ref().expect("should have layout manager").clone();
+				// copy the ref counted layout manager
+				self.layout_manager = Some(lm_ref.clone());
+				// get a mutable ref of the ref counted layout manager
+				let mut lm = lm_ref.borrow_mut();
+				// create a new node for the panel
+				self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
+				// get the layout node of of the parent 
+				let parent = lm.get_node(parent_node.expect("should have parent_node"));
+				// add a NodeIndex to the parent of this Panel's node
+				parent.children.push(*self.layout_node.as_ref().expect("layout node should exist"));
+			}
+			
 
 			for child in self.children.iter_mut() {
-				child.attach_layout(Some(layout_manager.clone()),Some(self.layout_node.expect("layout node should be copy")))
+				let lm_ref = layout_manager.as_ref().unwrap().clone();
+				child.attach_layout(Some(lm_ref),Some(self.layout_node.expect("layout node should be copy")))
 			}
 		}
 	}

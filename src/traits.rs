@@ -16,6 +16,12 @@ pub trait Renderer{
 	fn draw_rectangle(&self, r: &Rect);
 	fn get_dimensions(&self) -> Size;
 	fn draw_text(&self, r: &Rect, text:&String);
+	fn clear(&self) {
+		
+	}
+	fn shutdown(&self) {
+
+	}
 	// Future
 	// fn draw_ellipse(&self);
 	// fn draw_triangle(&self);

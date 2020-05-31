@@ -6,12 +6,6 @@ pub struct CursesRenderer {
     window: Window,
 }
 
-impl Drop for CursesRenderer {
-    fn drop(&mut self) {
-        endwin();
-    }
-}
-
 impl CursesRenderer {
     pub fn new() -> Self {
         let w = initscr();
@@ -65,5 +59,13 @@ impl Renderer for CursesRenderer {
         for x in start_x..=end_x {
             self.draw_character(x as i32, start_y, chars[x as usize]);
         }
+    }
+
+    fn shutdown(&self){
+        endwin();
+    }
+
+    fn clear(&self){
+        self.window.clear();
     }
 }

@@ -40,12 +40,13 @@ impl VisualRoot {
 }
 
 fn main() -> Result<(),&'static str>{
-	let renderer = CursesRenderer::new();
-	let mut root = VisualRoot::new();
-/*
-    let mut v = VBox::new();
+   let mut root = VisualRoot::new();
+   let mut v = VBox::new();   
+   v.add_child(Panel::new()); 
+   v.add_child(Panel::new()); 
+   v.add_child(Panel::new());
 
-    let mut tb1 = Label::new();
+    /*let mut tb1 = Label::new();
     tb1.set_text(&String::from("mary had a little lamb"));
     v.add_child(tb1);
 
@@ -60,15 +61,18 @@ fn main() -> Result<(),&'static str>{
     m.add_child(tb3);*/
 
 	let mut panel = Panel::new();
-	//panel.add_child(v);
+	panel.add_child(v);
 
 	root.set_root(panel)?;
+	let renderer = CursesRenderer::new();
 	loop {
+		renderer.clear();
 		root.compute_layout(renderer.get_dimensions())?;
 		root.render(&renderer);
 		if renderer.getch() == Some(Input::Character('\u{1b}')) {
-		   break;
+			break;
 		}
 	}
-	Ok(())
+	renderer.shutdown();
+	Ok(())	
 }
