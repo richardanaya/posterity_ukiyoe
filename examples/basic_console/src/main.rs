@@ -12,16 +12,16 @@ fn main() -> Result<(),&'static str>{
 	h.add_child(tb1);
 	h.add_child(Panel::new());
 
+	let mut tb1 = Label::new();
+	tb1.set_text(&String::from("mary had a little lamb"));
+	h.add_child(tb1);
+
 	let mut v = VBox::new();
 	v.add_child(Panel::new());
 	v.add_child(Panel::new());
 	v.add_child(h);
 
-	/*let mut tb1 = Label::new();
-	tb1.set_text(&String::from("mary had a little lamb"));
-	v.add_child(tb1);
-
-	let mut tb2 = TextBox::new();
+	/*let mut tb2 = TextBox::new();
 	tb2.set_text(&String::from("who's fleece was white as snow"));
 	v.add_child(tb2);
 
@@ -31,10 +31,7 @@ fn main() -> Result<(),&'static str>{
 	tb3.set_text(&String::from("and everywhere that mary went"));
 	m.add_child(tb3);*/
 
-	let mut rootpanel = Panel::new();
-	rootpanel.add_child(v);
-
-	root.set_root(rootpanel)?;
+	root.set_root(v)?;
 	let renderer = CursesRenderer::new();
 	loop {
 		renderer.clear();
