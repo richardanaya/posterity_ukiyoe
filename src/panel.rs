@@ -30,22 +30,31 @@ impl UIElement for Panel {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		{
-			let lm = self.layout_manager.as_ref().unwrap().borrow();
-			let node = self.layout_node.unwrap();
-			let Layout{x,y,w,h} = lm.get_layout(node).unwrap();
-			renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
-		}
+		// get the layout manager
+		let lm = self.layout_manager.as_ref().unwrap().borrow();
+		// get the current node index of our node
+		let node = self.layout_node.unwrap();
+		// get the layout node with the nodex index and destruct it into dimensions
+		let Layout{x,y,w,h} = lm.get_layout(node).unwrap();
+		// render a rect
+		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
+
+		// render the children
 		for child in &self.children {
 			child.render(renderer);
 		}
 	}
 
 	fn attach_layout(&mut self,layout_manager:Rc<RefCell<Shoji>>, parent_node:NodeIndex) -> Result<(),&'static str> {
+		// copy the ref counted layout manager
 		self.layout_manager = Some(layout_manager.clone());
+		// get a mutable ref of the ref counted layout manager
 		let mut lm = layout_manager.borrow_mut();
+		// create a new node for the panel
 		self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new())?);
+		// get the layout node of of the parent 
 		let parent = lm.get_node(parent_node).unwrap();
+		// add a NodeIndex to the parent of this Panel's node
 		parent.children.push(*self.layout_node.as_ref().unwrap());
 		Ok(())
 	}
