@@ -22,7 +22,7 @@ impl VisualRoot {
 	}
 	fn set_root(&mut self, node: impl UIElement + 'static) -> Result<(),&'static str> {
 		let mut root_node = node;
-		root_node.attach_layout(self.layout_manager.clone(),self.layout_node)?;
+		root_node.attach_layout(Some(self.layout_manager.clone()),Some(self.layout_node));
 		self.root = Some(Box::new(root_node));
 		Ok(())
 	}

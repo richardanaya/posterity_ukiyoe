@@ -7,7 +7,7 @@ use shoji::*;
 pub trait UIElement {
 	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>>;
 	fn render(&self, renderer: &dyn Renderer);
-	fn attach_layout(&mut self,_layout_manager:Rc<RefCell<Shoji>>,_parent_node:NodeIndex) -> Result<(),&'static str> {
+	fn attach_layout(&mut self,_layout_manager:Option<Rc<RefCell<Shoji>>>,_parent_node:Option<NodeIndex>) {
 		panic!("this should be implemented")
 	}
 }
