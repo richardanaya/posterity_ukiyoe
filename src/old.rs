@@ -61,7 +61,7 @@ impl UIControl for Button {
         self.layout_node = Some(layout_manager.borrow_mut().new_node(
             Style { size: Size { width: Dimension::Percent(100.0), height: Dimension::Auto }, ..Default::default() },
             [].to_vec(),
-        ).unwrap());
+        ));
         self.layout_manager = Some(layout_manager);
         for child in self.children.iter_mut() {
             child.make_layout(self.layout_manager.as_ref().unwrap().clone());
@@ -170,7 +170,7 @@ impl Window {
         self.layout_node = Some(self.layout_manager.borrow_mut().new_node(
             Style { size: Size { width: Dimension::Points(self.window_size.x() as f32), height: Dimension::Points(self.window_size.y() as f32) }, ..Default::default() },
             [].to_vec(),
-        ).unwrap());
+        );
 
         control.make_layout(self.layout_manager.clone());
         self.layout_manager.as_ref().borrow_mut().add_child(self.layout_node.unwrap().clone(),control.get_layout().clone()).unwrap();

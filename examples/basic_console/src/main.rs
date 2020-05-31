@@ -16,7 +16,7 @@ impl TextWindow {
       let root_node = shoji.new_node(
          LayoutStyle { ..Default::default() },
          vec![],
-     ).unwrap();
+     );
       TextWindow {
          root:None,
          renderer: CursesRenderer::new(),
@@ -24,10 +24,11 @@ impl TextWindow {
          layout_node: root_node
       }
    }
-   fn set_child(&mut self, node: impl UIElement + 'static){
+   fn set_child(&mut self, node: impl UIElement + 'static) -> Result<(),&'static str> {
       let mut root_node = node;
-      root_node.attach_layout(self.layout_manager.clone(),self.layout_node);
+      root_node.attach_layout(self.layout_manager.clone(),self.layout_node)?;
       self.root = Some(Box::new(root_node));
+      Ok(())
    }
 
    fn render(&self){
@@ -46,14 +47,14 @@ impl TextWindow {
 fn main() -> Result<(),&'static str>{
    let mut window = TextWindow::new();
    let panel = Panel::new();
-   window.set_child(panel);
+   window.set_child(panel)?;
    loop {
+      window.compute_layout()?;
+      window.render();
       // if escape pressed
       if window.renderer.getch() == Some(Input::Character('\u{1b}')) {
          break;
       }
-      window.compute_layout()?;
-      window.render();
    }
    Ok(())
 }

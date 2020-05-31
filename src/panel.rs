@@ -19,7 +19,9 @@ impl Panel {
 		}
 	}
 
-	pub fn add_child(&mut self, c:impl UIElement + 'static) {
+	pub fn add_child(&mut self, mut c:impl UIElement + 'static) {
+		let root_node = self.layout_node.unwrap();
+		c.attach_layout(self.layout_manager.as_ref().unwrap().clone(),root_node).unwrap();
 	    self.children.push(Box::new(c));
 	}
 }
@@ -51,9 +53,9 @@ impl UIElement for Panel {
 		// get a mutable ref of the ref counted layout manager
 		let mut lm = layout_manager.borrow_mut();
 		// create a new node for the panel
-		self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new())?);
+		self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
 		// get the layout node of of the parent 
-		let parent = lm.get_node(parent_node).unwrap();
+		let parent = lm.get_node(parent_node);
 		// add a NodeIndex to the parent of this Panel's node
 		parent.children.push(*self.layout_node.as_ref().unwrap());
 		Ok(())

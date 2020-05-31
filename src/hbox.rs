@@ -1,4 +1,8 @@
 use crate::traits::*;
+use std::rc::Rc;
+use std::cell::RefCell;
+use shoji::*;
+use crate::rect::*;
 
 // HBox
 // HBox lays out its children in a single horizontal row from left to right.
@@ -6,16 +10,22 @@ use crate::traits::*;
 
 pub struct HBox {
 	children: Vec<Box<dyn UIElement>>,
+	layout_manager: Option<Rc<RefCell<shoji::Shoji>>>,
+	layout_node: Option<shoji::NodeIndex>
 }
 
 impl HBox {
 	pub fn new() -> Self {
 		HBox {
-			children: Vec::new()
+			children: Vec::new(),
+			layout_manager: None,
+			layout_node: None,
 		}
 	}
 
-	pub fn add_child(&mut self, c:impl UIElement + 'static) {
+	pub fn add_child(&mut self, mut c:impl UIElement + 'static) {
+		let root_node = self.layout_node.unwrap();
+		c.attach_layout(self.layout_manager.as_ref().unwrap().clone(),root_node).unwrap();
 	    self.children.push(Box::new(c));
 	}
 }
@@ -26,8 +36,32 @@ impl UIElement for HBox {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
+		// get the layout manager
+		let lm = self.layout_manager.as_ref().unwrap().borrow();
+		// get the current node index of our node
+		let node = self.layout_node.unwrap();
+		// get the layout node with the nodex index and destruct it into dimensions
+		let Layout{x,y,w,h} = lm.get_layout(node).unwrap();
+		// render a rect
+		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
+
+		// render the children
 		for child in &self.children {
 			child.render(renderer);
 		}
+	}
+
+	fn attach_layout(&mut self,layout_manager:Rc<RefCell<Shoji>>, parent_node:NodeIndex) -> Result<(),&'static str> {
+		// copy the ref counted layout manager
+		self.layout_manager = Some(layout_manager.clone());
+		// get a mutable ref of the ref counted layout manager
+		let mut lm = layout_manager.borrow_mut();
+		// create a new node for the panel
+		self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
+		// get the layout node of of the parent 
+		let parent = lm.get_node(parent_node);
+		// add a NodeIndex to the parent of this Panel's node
+		parent.children.push(*self.layout_node.as_ref().unwrap());
+		Ok(())
 	}
 }
