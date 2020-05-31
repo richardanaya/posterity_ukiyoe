@@ -25,5 +25,8 @@ pub use self::hbox::*;
 mod vbox;
 pub use self::vbox::*;
 
+mod layout;
+pub use self::layout::*;
+
 #[cfg(test)]
 mod ukiyoe_test;

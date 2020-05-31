@@ -53,11 +53,10 @@ impl Renderer for CursesRenderer {
     }
     fn draw_text(&self, r: &Rect, text:&String) {
         let start_x = r.position.x as i32;
-        let end_x = (r.position.x + r.size.width) as i32;
         let start_y = r.position.y as i32;
         let chars:Vec<char> = text.chars().collect();
-        for x in start_x..=end_x {
-            self.draw_character(x as i32, start_y, chars[x as usize]);
+        for (i,c) in chars.iter().enumerate() {
+            self.draw_character(start_x+i as i32, start_y, *c);
         }
     }
 

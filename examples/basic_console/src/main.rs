@@ -41,9 +41,14 @@ impl VisualRoot {
 
 fn main() -> Result<(),&'static str>{
    let mut root = VisualRoot::new();
+
+   let mut tb1 = Label::new();
+	tb1.set_text(&String::from("hello world!"));
+
+
    let mut h = HBox::new();   
    h.add_child(Panel::new()); 
-   h.add_child(Panel::new()); 
+   h.add_child(tb1); 
    h.add_child(Panel::new());
 
    let mut v = VBox::new();   

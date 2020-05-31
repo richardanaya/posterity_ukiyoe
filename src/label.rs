@@ -1,14 +1,12 @@
-use crate::traits::*;
+use crate::*;
 use std::rc::Rc;
 use std::cell::RefCell;
 use shoji::*;
-use crate::rect::*;
 
 pub struct Label {
 	children: Vec<Box<dyn UIElement>>,
 	text: String,
-	layout_manager: Option<Rc<RefCell<shoji::Shoji>>>,
-	layout_node: Option<shoji::NodeIndex>
+	layout: Option<UILayout>
 }
 
 impl Label {
@@ -16,12 +14,15 @@ impl Label {
 		Label {
 			children: Vec::new(),
 			text: String::from(""),
-			layout_manager: None,
-			layout_node: None,
+			layout: None
 		}
 	}
 
-	pub fn add_child(&mut self, c:impl UIElement + 'static) {
+	pub fn add_child(&mut self, mut c:impl UIElement + 'static) {
+		match &mut self.layout {
+			Some(lm) => c.attach_layout(Some(lm.layout_manager.clone()),Some(lm.layout_node)),
+			None => c.attach_layout(None,None)
+		};
 	    self.children.push(Box::new(c));
 	}
 
@@ -35,32 +36,23 @@ impl UIElement for Label {
 		return &mut self.children;
 	}
 
-	fn render(&self, _renderer: &dyn Renderer) {
-		//renderer.draw_text(self.get_actual_area(), &self.text, );
+	fn render(&self, renderer: &dyn Renderer) {
+		if let Some(layout) = &self.layout {
+			let mut r = layout.as_rect();
+			r.position.x += 1.0;
+			r.position.y += 1.0;
+			renderer.draw_text(&r, &self.text, );
+
+			// render the children
+			for child in &self.children {
+				child.render(renderer);
+			}
+		}
 	}
 
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-			
-			{
-				let lm_ref = layout_manager.as_ref().expect("should have layout manager").clone();
-				// copy the ref counted layout manager
-				self.layout_manager = Some(lm_ref.clone());
-				// get a mutable ref of the ref counted layout manager
-				let mut lm = lm_ref.borrow_mut();
-				// create a new node for the panel
-				self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
-				// get the layout node of of the parent 
-				let parent = lm.get_node(parent_node.expect("should have parent_node"));
-				// add a NodeIndex to the parent of this Panel's node
-				parent.children.push(*self.layout_node.as_ref().expect("layout node should exist"));
-			}
-			
-
-			for child in self.children.iter_mut() {
-				let lm_ref = layout_manager.as_ref().unwrap().clone();
-				child.attach_layout(Some(lm_ref),Some(self.layout_node.expect("layout node should be copy")))
-			}
+	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut self.children));
 		}
 	}
 }

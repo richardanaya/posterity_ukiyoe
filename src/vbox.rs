@@ -1,8 +1,7 @@
-use crate::traits::*;
+use crate::*;
 use std::rc::Rc;
 use std::cell::RefCell;
 use shoji::*;
-use crate::rect::*;
 
 // VBox
 // VBox lays out its children in a single vertical column from top to bottom.
@@ -10,25 +9,22 @@ use crate::rect::*;
 
 pub struct VBox {
 	children: Vec<Box<dyn UIElement>>,
-	layout_manager: Option<Rc<RefCell<shoji::Shoji>>>,
-	layout_node: Option<shoji::NodeIndex>
+	layout: Option<UILayout>
 }
 
 impl VBox {
 	pub fn new() -> Self {
 		VBox {
 			children: Vec::new(),
-			layout_manager: None,
-			layout_node: None,
+			layout: None,
 		}
 	}
 
 	pub fn add_child(&mut self, mut c:impl UIElement + 'static) {
-		let lm = match self.layout_manager.as_ref() {
-			Some(lm) => Some(lm.clone()),
-			None => None
+		match &mut self.layout {
+			Some(lm) => c.attach_layout(Some(lm.layout_manager.clone()),Some(lm.layout_node)),
+			None => c.attach_layout(None,None)
 		};
-		c.attach_layout(lm,self.layout_node);
 	    self.children.push(Box::new(c));
 	}
 }
@@ -39,45 +35,21 @@ impl UIElement for VBox {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		// get the layout manager
-		let lm = self.layout_manager.as_ref().expect("should have layout manager to render").borrow();
-		// get the current node index of our node
-		let node = self.layout_node.expect("should have layout node to render");
-		// get the layout node with the nodex index and destruct it into dimensions
-		let Layout{x,y,w,h} = lm.get_layout(node).expect("Should have layout");
-		// render a rect
-		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
+		if let Some(layout) = &self.layout {
+			renderer.draw_rectangle(&layout.as_rect());
 
-		// render the children
-		for child in &self.children {
-			child.render(renderer);
+			// render the children
+			for child in &self.children {
+				child.render(renderer);
+			}
 		}
 	}
 
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-			
-			{
-				let lm_ref = layout_manager.as_ref().expect("should have layout manager").clone();
-				// copy the ref counted layout manager
-				self.layout_manager = Some(lm_ref.clone());
-				// get a mutable ref of the ref counted layout manager
-				let mut lm = lm_ref.borrow_mut();
-				// create a new node for the panel
-				self.layout_node = Some(lm.new_node(LayoutStyle{
-					direction: Direction::TopBottom
-				},Vec::new()));
-				// get the layout node of of the parent 
-				let parent = lm.get_node(parent_node.expect("should have parent_node"));
-				// add a NodeIndex to the parent of this Panel's node
-				parent.children.push(*self.layout_node.as_ref().expect("layout node should exist"));
-			}
-			
-
-			for child in self.children.iter_mut() {
-				let lm_ref = layout_manager.as_ref().unwrap().clone();
-				child.attach_layout(Some(lm_ref),Some(self.layout_node.expect("layout node should be copy")))
-			}
+	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle{
+				 direction: Direction::TopBottom
+			 },&mut self.children));
 		}
 	}
 }
