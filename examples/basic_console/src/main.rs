@@ -4,57 +4,54 @@ use shoji::*;
 use std::rc::Rc;
 use std::cell::RefCell;
 
-struct TextWindow {
-    root: Option<Box<dyn UIElement>>,
-    renderer: CursesRenderer,
-    layout_manager:Rc<RefCell<shoji::Shoji>>,
-    layout_node:shoji::NodeIndex,
+struct VisualRoot {
+	root: Option<Box<dyn UIElement>>,
+	layout_manager:Rc<RefCell<shoji::Shoji>>,
+	layout_node:shoji::NodeIndex,
 }
-impl TextWindow {
-   fn new() -> Self {
-      let mut shoji = Shoji::new();
-      let root_node = shoji.new_node(
-         LayoutStyle { ..Default::default() },
-         vec![],
-     );
-      TextWindow {
-         root:None,
-         renderer: CursesRenderer::new(),
-         layout_manager: Rc::new(RefCell::new(shoji)),
-         layout_node: root_node
-      }
-   }
-   fn set_child(&mut self, node: impl UIElement + 'static) -> Result<(),&'static str> {
-      let mut root_node = node;
-      root_node.attach_layout(self.layout_manager.clone(),self.layout_node)?;
-      self.root = Some(Box::new(root_node));
-      Ok(())
-   }
+impl VisualRoot {
+	fn new() -> Self {
+		let mut shoji = Shoji::new();
+		let root_node = shoji.new_node(
+			LayoutStyle { ..Default::default() }, vec![], );
+			VisualRoot {
+				root:None,
+				layout_manager: Rc::new(RefCell::new(shoji)),
+				layout_node: root_node
+			}
+	}
+	fn set_root(&mut self, node: impl UIElement + 'static) -> Result<(),&'static str> {
+		let mut root_node = node;
+		root_node.attach_layout(self.layout_manager.clone(),self.layout_node)?;
+		self.root = Some(Box::new(root_node));
+		Ok(())
+	}
 
-   fn render(&self){
-      if let Some(r) = &self.root {
-         r.render(&self.renderer)
-      }
-   }
+	fn render(&self, renderer: &dyn Renderer){
+		if let Some(r) = &self.root {
+			r.render(renderer)
+		}
+	}
 
-   fn compute_layout(&self) -> Result<(),&'static str> {
-      let dim = self.renderer.get_dimensions();
-      self.layout_manager.borrow_mut().compute_layout(self.layout_node,LayoutSize::new(dim.width-1 as f64, dim.height-1 as f64))?;
-      Ok(())
-   }
+	fn compute_layout(&self, size: Size) -> Result<(),&'static str> {
+		self.layout_manager.borrow_mut().compute_layout(self.layout_node,LayoutSize::new(size.width-1 as f64, size.height-1 as f64))?;
+		Ok(())
+	}
 }
 
 fn main() -> Result<(),&'static str>{
-   let mut window = TextWindow::new();
-   let panel = Panel::new();
-   window.set_child(panel)?;
-   loop {
-      window.compute_layout()?;
-      window.render();
-      // if escape pressed
-      if window.renderer.getch() == Some(Input::Character('\u{1b}')) {
-         break;
-      }
-   }
-   Ok(())
+	let renderer = CursesRenderer::new();
+	let mut root = VisualRoot::new();
+	let panel = Panel::new();
+	root.set_root(panel)?;
+	loop {
+		root.compute_layout(renderer.get_dimensions())?;
+		root.render(&renderer);
+		// if escape pressed
+		// todo move this to input handling
+		//if root.renderer.getch() == Some(Input::Character('\u{1b}')) {
+		//	break;
+		//}
+	}
+	Ok(())
 }
