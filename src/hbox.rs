@@ -1,4 +1,3 @@
-use crate::rect::*;
 use crate::traits::*;
 
 // HBox

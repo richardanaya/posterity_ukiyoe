@@ -1,4 +1,3 @@
-use crate::rect::*;
 use crate::traits::*;
 
 pub struct TextBox {

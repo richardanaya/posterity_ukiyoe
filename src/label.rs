@@ -1,4 +1,3 @@
-use crate::rect::*;
 use crate::traits::*;
 
 pub struct Label {
@@ -28,7 +27,7 @@ impl UIElement for Label {
 		return &mut self.children;
 	}
 
-	fn render(&self, renderer: &dyn Renderer) {
+	fn render(&self, _renderer: &dyn Renderer) {
 		//renderer.draw_text(self.get_actual_area(), &self.text, );
 	}
 }

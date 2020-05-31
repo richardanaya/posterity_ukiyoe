@@ -30,16 +30,23 @@ impl UIElement for Panel {
 	}
 
 	fn render(&self, renderer: &dyn Renderer) {
-		let lm = self.layout_manager.as_ref().unwrap().borrow();
-		let Layout{x,y,w,h} = lm.get_layout(self.layout_node.unwrap()).unwrap();
-		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
+		{
+			let lm = self.layout_manager.as_ref().unwrap().borrow();
+			let node = self.layout_node.unwrap();
+			let Layout{x,y,w,h} = lm.get_layout(node).unwrap();
+			renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
+		}
 		for child in &self.children {
 			child.render(renderer);
 		}
 	}
 
-	fn attach_layout(&mut self,layout_manager:Rc<RefCell<Shoji>>) {
-		self.layout_node = Some(layout_manager.borrow_mut().new_node(LayoutStyle::default(),Vec::new()).unwrap());
-		self.layout_manager = Some(layout_manager);
+	fn attach_layout(&mut self,layout_manager:Rc<RefCell<Shoji>>, parent_node:NodeIndex) -> Result<(),&'static str> {
+		self.layout_manager = Some(layout_manager.clone());
+		let mut lm = layout_manager.borrow_mut();
+		self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new())?);
+		let parent = lm.get_node(parent_node).unwrap();
+		parent.children.push(*self.layout_node.as_ref().unwrap());
+		Ok(())
 	}
 }
