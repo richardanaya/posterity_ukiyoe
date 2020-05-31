@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 glfw = "0.37.0"
+gl = "0.10.0"
+gl_loader = "0.1.2"
