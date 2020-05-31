@@ -8,4 +8,4 @@ edition = "2018"
 
 [dependencies]
 common = {path="../common"}
-ukiyoe = {path="../../"}
+ukiyoe = {path="../../ukiyoe"}

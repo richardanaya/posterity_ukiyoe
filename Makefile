@@ -26,16 +26,16 @@ clean: clean-ukiyoe
 ############## UKIYOE TOP LEVEL ##############
 
 build-ukiyoe:
-	cargo build
+	$(MAKE) -C ukiyoe build
 
 lint-ukiyoe:
-	cargo fmt
+	$(MAKE) -C ukiyoe lint
 
 test-ukiyoe:
-	cargo test
+	$(MAKE) -C ukiyoe test
 
 clean-ukiyoe:
-	cargo clean
+	$(MAKE) -C ukiyoe clean
 
 ############## EXAMPLES ##############
 
