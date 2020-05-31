@@ -47,3 +47,6 @@ run-example-basic: build
 
 run-example-rectangular: build
 	$(MAKE) -C examples/rectangular run
+
+run-example-basic_console: build
+	$(MAKE) -C examples/basic_console run
