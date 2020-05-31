@@ -1,5 +1,5 @@
 use ukiyoe::*;
-use common::*;
+use ukiyoe_curses::*;
 
 fn main() {
     /*let mut root = VBox::new();

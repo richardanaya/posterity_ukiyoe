@@ -1,5 +1,5 @@
 use ukiyoe::*;
-use common::*;
+use ukiyoe_curses::*;
 
 fn main() -> Result<(),&'static str>{
 	let mut root = VisualRoot::new();

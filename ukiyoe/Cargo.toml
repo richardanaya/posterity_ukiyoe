@@ -10,5 +10,4 @@ readme="README.md"
 
 
 [dependencies]
-stretch = "0.3.2"
 shoji = "0.1"

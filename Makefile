@@ -1,12 +1,13 @@
 EXAMPLES := $(wildcard examples/*)
+RENDERERS := "ukiyoe_curses"
 
 .default: build
 
-.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe clean-ukiyoe $(EXAMPLES) run-example-basic run-example-rectangular
+.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe clean-ukiyoe $(EXAMPLES) $(RENDERERS) run-example-basic run-example-rectangular
 
 ############## PROJECT TOP LEVEL ##############
 
-build: build-ukiyoe $(EXAMPLES)
+build: build-ukiyoe $(RENDERERS) $(EXAMPLES)
 
 lint: lint-ukiyoe
 	for dir in $(EXAMPLES); do \
@@ -36,6 +37,11 @@ test-ukiyoe:
 
 clean-ukiyoe:
 	$(MAKE) -C ukiyoe clean
+
+############## RENDERERS TOP LEVEL ##############
+
+$(RENDERERS): build-ukiyoe
+	(cd $@; cargo build)
 
 ############## EXAMPLES ##############
 

@@ -1,5 +1,5 @@
-use common::*;
 use ukiyoe::*;
+use ukiyoe_curses::*;
 
 fn main() {
     let renderer = CursesRenderer::new();
