@@ -42,7 +42,26 @@ impl VisualRoot {
 fn main() -> Result<(),&'static str>{
 	let renderer = CursesRenderer::new();
 	let mut root = VisualRoot::new();
-	let panel = Panel::new();
+
+    let mut v = VBox::new();
+
+    let mut tb1 = Label::new();
+    tb1.set_text(&String::from("mary had a little lamb"));
+    v.add_child(tb1);
+
+    let mut tb2 = TextBox::new();
+    tb2.set_text(&String::from("who's fleece was white as snow"));
+    v.add_child(tb2);
+
+    let mut m = HBox::new();
+
+    let mut tb3 = TextBox::new();
+    tb3.set_text(&String::from("and everywhere that mary went"));
+    m.add_child(tb3);
+
+	let mut panel = Panel::new();
+	panel.add_child(v);
+
 	root.set_root(panel)?;
 	loop {
 		root.compute_layout(renderer.get_dimensions())?;
@@ -53,5 +72,5 @@ fn main() -> Result<(),&'static str>{
 		//	break;
 		//}
 	}
-	Ok(())
+	//Ok(())
 }
