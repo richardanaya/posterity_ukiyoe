@@ -28,5 +28,8 @@ pub use self::vbox::*;
 mod layout;
 pub use self::layout::*;
 
+mod visualroot;
+pub use self::visualroot::*;
+
 #[cfg(test)]
 mod ukiyoe_test;
