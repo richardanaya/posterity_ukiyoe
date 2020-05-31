@@ -64,7 +64,9 @@ impl UIElement for VBox {
 				// get a mutable ref of the ref counted layout manager
 				let mut lm = lm_ref.borrow_mut();
 				// create a new node for the panel
-				self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
+				self.layout_node = Some(lm.new_node(LayoutStyle{
+					direction: Direction::TopBottom
+				},Vec::new()));
 				// get the layout node of of the parent 
 				let parent = lm.get_node(parent_node.expect("should have parent_node"));
 				// add a NodeIndex to the parent of this Panel's node
