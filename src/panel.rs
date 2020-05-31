@@ -36,11 +36,11 @@ impl UIElement for Panel {
 
 	fn render(&self, renderer: &dyn Renderer) {
 		// get the layout manager
-		let lm = self.layout_manager.as_ref().unwrap().borrow();
+		let lm = self.layout_manager.as_ref().expect("should have layout manager to render").borrow();
 		// get the current node index of our node
-		let node = self.layout_node.unwrap();
+		let node = self.layout_node.expect("should have layout node to render");
 		// get the layout node with the nodex index and destruct it into dimensions
-		let Layout{x,y,w,h} = lm.get_layout(node).unwrap();
+		let Layout{x,y,w,h} = lm.get_layout(node).expect("should have layout");
 		// render a rect
 		renderer.draw_rectangle(&Rect::from_numbers(*x,*y,*w,*h));
 
@@ -52,7 +52,7 @@ impl UIElement for Panel {
 
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-			let layout_manager = layout_manager.unwrap();
+			let layout_manager = layout_manager.expect("should have layout manager");
 			// copy the ref counted layout manager
 			self.layout_manager = Some(layout_manager.clone());
 			// get a mutable ref of the ref counted layout manager
@@ -60,9 +60,13 @@ impl UIElement for Panel {
 			// create a new node for the panel
 			self.layout_node = Some(lm.new_node(LayoutStyle::default(),Vec::new()));
 			// get the layout node of of the parent 
-			let parent = lm.get_node(parent_node.unwrap());
+			let parent = lm.get_node(parent_node.expect("should have parent_node"));
 			// add a NodeIndex to the parent of this Panel's node
-			parent.children.push(*self.layout_node.as_ref().unwrap());
+			parent.children.push(*self.layout_node.as_ref().expect("layout node should exist"));
+
+			for child in self.children.iter_mut() {
+				child.attach_layout(Some(layout_manager.clone()),Some(self.layout_node.expect("layout node should be copy")))
+			}
 		}
 	}
 }

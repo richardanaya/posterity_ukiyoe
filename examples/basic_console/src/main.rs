@@ -42,7 +42,7 @@ impl VisualRoot {
 fn main() -> Result<(),&'static str>{
 	let renderer = CursesRenderer::new();
 	let mut root = VisualRoot::new();
-
+/*
     let mut v = VBox::new();
 
     let mut tb1 = Label::new();
@@ -57,20 +57,18 @@ fn main() -> Result<(),&'static str>{
 
     let mut tb3 = TextBox::new();
     tb3.set_text(&String::from("and everywhere that mary went"));
-    m.add_child(tb3);
+    m.add_child(tb3);*/
 
 	let mut panel = Panel::new();
-	panel.add_child(v);
+	//panel.add_child(v);
 
 	root.set_root(panel)?;
 	loop {
 		root.compute_layout(renderer.get_dimensions())?;
 		root.render(&renderer);
-		// if escape pressed
-		// todo move this to input handling
-		//if root.renderer.getch() == Some(Input::Character('\u{1b}')) {
-		//	break;
-		//}
+		if renderer.getch() == Some(Input::Character('\u{1b}')) {
+		   break;
+		}
 	}
-	//Ok(())
+	Ok(())
 }
