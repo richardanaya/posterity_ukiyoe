@@ -59,8 +59,23 @@ impl UIElement for Label {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 			let mut r = layout.as_rect();
+
+			// make up something about the text size
+			// need to know more about the font to do this
+			let imaginary_text_width = 0.8 as f64;
+
+			// compute the "actual" width of the text in normalized coordinates
+			let text_width = imaginary_text_width * self.text.len() as f64;
+			// todo do this with height
+
+			// roughly center the text
 			r.position.x += self.xalign * r.size.width;
 			r.position.y += self.yalign * r.size.height;
+
+			// tweak the text centering based on the actual length of text
+			r.position.x -= text_width * self.xalign;
+			// todo do this with height
+
 			renderer.draw_text(&r, &self.text, );
 
 			// render the children
