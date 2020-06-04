@@ -6,7 +6,10 @@ use shoji::*;
 pub struct Label {
 	children: Vec<Box<dyn UIElement>>,
 	text: String,
-	layout: Option<UILayout>
+	layout: Option<UILayout>,
+	xalign: f32,
+	yalign: f32,
+	max_width_characters: u32 //in characters, not pixels
 }
 
 impl Label {
@@ -14,7 +17,10 @@ impl Label {
 		Label {
 			children: Vec::new(),
 			text: String::from(""),
-			layout: None
+			layout: None,
+			xalign: 0.5,
+			yalign: 0.5,
+			max_width_characters: 0
 		}
 	}
 
@@ -28,6 +34,20 @@ impl Label {
 
 	pub fn set_text(&mut self, text: &String) {
 		self.text = text.to_string();
+	}
+
+	pub fn set_xalign(&mut self, xalign: f32) {
+		// between 0 and 1
+		self.xalign = xalign;
+	}
+
+	pub fn set_yalign(&mut self, yalign: f32) {
+		// between 0 and 1
+		self.yalign = yalign;
+	}
+
+	pub fn set_max_width_characters(&mut self, max_width_characters: u32) {
+		self.max_width_characters = max_width_characters;
 	}
 }
 
