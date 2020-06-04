@@ -5,7 +5,7 @@ fn main() -> Result<(),&'static str>{
 	let mut root = VisualRoot::new();
 
 	let mut tb1 = Label::new();
-	tb1.set_text(&String::from("hello world!"));
+	tb1.set_text(&String::from("This text is actually supposed to be really intentionally very long"));
 
 	let mut h = HBox::new();
 	h.add_child(Panel::new());
@@ -13,23 +13,22 @@ fn main() -> Result<(),&'static str>{
 	h.add_child(Panel::new());
 
 	let mut tb1 = Label::new();
-	tb1.set_text(&String::from("mary had a little lamb"));
+	tb1.set_text(&String::from("hello world!"));
 	h.add_child(tb1);
 
 	let mut v = VBox::new();
 	v.add_child(Panel::new());
-	v.add_child(Panel::new());
+
+	let mut h2 = HBox::new();
+	h2.add_child(Panel::new());
+
+	let mut tb2 = Label::new();
+	tb2.set_text(&String::from("mary had a little lamb"));
+	h2.add_child(tb2);
+
+	v.add_child(h2);
+
 	v.add_child(h);
-
-	/*let mut tb2 = TextBox::new();
-	tb2.set_text(&String::from("who's fleece was white as snow"));
-	v.add_child(tb2);*/
-
-	/*let mut m = HBox::new();
-
-	let mut tb3 = TextBox::new();
-	tb3.set_text(&String::from("and everywhere that mary went"));
-	m.add_child(tb3);*/
 
 	root.set_root(v)?;
 	let renderer = CursesRenderer::new();
