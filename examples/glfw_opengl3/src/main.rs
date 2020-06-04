@@ -4,26 +4,28 @@ extern crate gl;
 use std;
 use std::ffi::{CStr, CString};
 use glfw::{Action, Context, Key};
-use nalgebra::base::Matrix4
+use nalgebra::base::{Matrix4, Vector3};
+use nalgebra::{Point3};
+//use nalgebra::geometry::point::{Point};
 
 fn load_gl_symbol() {
 	gl_loader::init_gl();
 	gl::load_with(|symbol| gl_loader::get_proc_address(symbol) as *const _);
 }
 
-fn check_for_gl_error(file:CString, line: i32) -> i32 {
+fn check_for_gl_error(file:CString, line: i32) -> u32 {
 	let e = gl::GetError();
-	if(e != gl::GL_NO_ERROR)
+	if e != gl::NO_ERROR
 	{
-		println!("{:?} %s:%d (%d)", file, line, e);
+		println!("{} {} ({})", file.to_string_lossy(), line, e);
 	}
 	return e;
 }
 
 macro_rules! ASSERT_NO_ERROR_GL {
 	() => {
-		if(check_for_gl_error(__FILE__, __LINE__) != 0) {
-			assert(0);
+		if(check_for_gl_error(file!(), line!()) != 0) {
+			assert!(false);
 		}
 	}
 }
@@ -254,9 +256,12 @@ fn main() {
 	}
 
 	/* VIEW MATRIX */
-	let viewMatrix = Matrix4::look_at_rh(HYP_VECTOR3_UNIT_Z, HYP_VECTOR3_ZERO, HYP_VECTOR3_UNIT_Y);
+	let eye = Point3::new(0.0, 0.0, 1.0);
+	let target = Point3::new(0.0, 0.0, 0.0);
+	let viewMatrix = Matrix4::look_at_rh(&eye, &target, &Vector3::y());
 
 	/* BEGIN projection matrix */
+	/*
 	currentViewport = renderContext->currentViewport;
 
 	if(currentViewport->width < currentViewport->height)
@@ -269,6 +274,9 @@ fn main() {
 		rWidth = currentViewport->width / currentViewport->height;
 		rHeight = 1.0f;
 	}
+	*/
+	let rWidth = 1.0;
+	let rHeight = 1.0;
 
 	let projectionMatrix = Matrix4::new_orthographic(-rWidth, rWidth, -rHeight, rHeight, -1.0, 1.0);
 	/* END PROJECTION MATRIX */
@@ -283,11 +291,12 @@ fn main() {
 
 		// draw
 		shader_program.set_used();
-		shader_setmatrix4(self->spriteShader, "view", &viewMatrix);
-		shader_setmatrix4(self->spriteShader, "projection", &projectionMatrix);
 		unsafe {
+			gl::UniformMatrix4fv(gl::GetUniformLocation(shader_program.id, "view"), 1, gl::TRUE, &viewMatrix); ASSERT_NO_ERROR_GL!();
+			gl::UniformMatrix4fv(gl::GetUniformLocation(shader_program.id, "projection"), 1, gl::TRUE, &projectionMatrix); ASSERT_NO_ERROR_GL!();
+
 			//gl::BindVertexArray(vao);
-			gl::BindBuffer(GL_ELEMENT_ARRAY_BUFFER, self->vao); ASSERT_NO_ERROR_GL();
+			gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, vao); ASSERT_NO_ERROR_GL!();
 			gl::DrawArrays(gl::TRIANGLES, 0, 4,);
 		}
 
