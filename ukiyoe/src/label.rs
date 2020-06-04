@@ -59,8 +59,8 @@ impl UIElement for Label {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 			let mut r = layout.as_rect();
-			r.position.x += self.xalign;
-			r.position.y += self.yalign;
+			r.position.x += self.xalign * r.size.width;
+			r.position.y += self.yalign * r.size.height;
 			renderer.draw_text(&r, &self.text, );
 
 			// render the children
