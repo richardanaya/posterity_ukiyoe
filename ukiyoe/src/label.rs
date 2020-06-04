@@ -58,6 +58,16 @@ impl UIElement for Label {
 
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
+
+			let mut actual_text: String;
+
+			// what are we actually going to show?
+			if self.max_width_characters == 0 {
+				actual_text = self.text.chars().collect();
+			} else {
+				actual_text = self.text.chars().take(self.max_width_characters as usize).collect();
+			}
+
 			let mut r = layout.as_rect();
 
 			// make up something about the text size
@@ -65,7 +75,7 @@ impl UIElement for Label {
 			let imaginary_text_width = 0.8 as f64;
 
 			// compute the "actual" width of the text in normalized coordinates
-			let text_width = imaginary_text_width * self.text.len() as f64;
+			let text_width = imaginary_text_width * actual_text.len() as f64;
 			// todo do this with height
 
 			// roughly center the text
@@ -76,7 +86,7 @@ impl UIElement for Label {
 			r.position.x -= text_width * self.xalign;
 			// todo do this with height
 
-			renderer.draw_text(&r, &self.text, );
+			renderer.draw_text(&r, &actual_text, );
 
 			// render the children
 			for child in &self.children {

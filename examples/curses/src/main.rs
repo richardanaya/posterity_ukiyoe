@@ -23,7 +23,8 @@ fn main() -> Result<(),&'static str>{
 	h2.add_child(Panel::new());
 
 	let mut tb2 = Label::new();
-	tb2.set_text(&String::from("mary had a little lamb"));
+	tb2.set_text(&String::from("Mary had a little lamb, Its fleece was white as snow, And every where that Mary went The lamb was sure to go"));
+	tb2.set_max_width_characters(30);
 	h2.add_child(tb2);
 
 	v.add_child(h2);
