@@ -7,8 +7,8 @@ pub struct Label {
 	children: Vec<Box<dyn UIElement>>,
 	text: String,
 	layout: Option<UILayout>,
-	xalign: f32,
-	yalign: f32,
+	xalign: f64,
+	yalign: f64,
 	max_width_characters: u32 //in characters, not pixels
 }
 
@@ -36,12 +36,12 @@ impl Label {
 		self.text = text.to_string();
 	}
 
-	pub fn set_xalign(&mut self, xalign: f32) {
+	pub fn set_xalign(&mut self, xalign: f64) {
 		// between 0 and 1
 		self.xalign = xalign;
 	}
 
-	pub fn set_yalign(&mut self, yalign: f32) {
+	pub fn set_yalign(&mut self, yalign: f64) {
 		// between 0 and 1
 		self.yalign = yalign;
 	}
@@ -59,8 +59,8 @@ impl UIElement for Label {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 			let mut r = layout.as_rect();
-			r.position.x += 1.0;
-			r.position.y += 1.0;
+			r.position.x += self.xalign;
+			r.position.y += self.yalign;
 			renderer.draw_text(&r, &self.text, );
 
 			// render the children
