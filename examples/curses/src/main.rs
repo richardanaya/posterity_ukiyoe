@@ -21,9 +21,9 @@ fn main() -> Result<(),&'static str>{
 	v.add_child(Panel::new());
 	v.add_child(h);
 
-	let mut tb2 = TextBox::new();
+	/*let mut tb2 = TextBox::new();
 	tb2.set_text(&String::from("who's fleece was white as snow"));
-	v.add_child(tb2);
+	v.add_child(tb2);*/
 
 	/*let mut m = HBox::new();
 
