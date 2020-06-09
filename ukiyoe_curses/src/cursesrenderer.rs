@@ -1,5 +1,5 @@
 pub use pancurses::Input;
-use pancurses::{curs_set, endwin, initscr, noecho, Window};
+use pancurses::{curs_set, endwin, initscr, noecho, Window, start_color, use_default_colors, ColorPair, Attribute};
 use ukiyoe::*;
 
 pub struct CursesRenderer {
@@ -11,6 +11,8 @@ impl CursesRenderer {
         let w = initscr();
         noecho();
         curs_set(0);
+        start_color();
+        use_default_colors();
         CursesRenderer { window: w }
     }
 
@@ -29,6 +31,9 @@ impl Renderer for CursesRenderer {
 		let end_x = (r.position.x + r.size.width) as i32;
 		let start_y = r.position.y as i32;
 		let end_y = (r.position.y + r.size.height) as i32;
+
+        // todo - make sure the numbers are on the canvas
+
 		for x in start_x..=end_x {
 			self.draw_character(x, start_y,'x');
 		}
@@ -42,6 +47,8 @@ impl Renderer for CursesRenderer {
 			self.draw_character(end_x, y,'x');
 		}
 
+        //self.window.border(start_x, end_x, end_y, start_y, 10, 10, 10, 10);
+
         // code smell
         self.window.refresh();
     }
@@ -51,13 +58,27 @@ impl Renderer for CursesRenderer {
             height: self.window.get_max_y() as f64,
         }
     }
-    fn draw_text(&self, r: &Rect, text:&String) {
+    fn draw_text(&self, r: &Rect, text:&String, bold:bool, underline:bool) {
+
+        //self.window.attrset(ColorPair(4));
+
+        if bold {
+            self.window.attron(Attribute::Bold);
+        }
+
+        if underline {
+            self.window.attron(Attribute::Underline);
+        }
+
         let start_x = r.position.x as i32;
         let start_y = r.position.y as i32;
         let chars:Vec<char> = text.chars().collect();
         for (i,c) in chars.iter().enumerate() {
             self.draw_character(start_x+i as i32, start_y, *c);
         }
+
+        self.window.attroff(Attribute::Underline);
+        self.window.attroff(Attribute::Bold);
     }
 
     fn shutdown(&self){

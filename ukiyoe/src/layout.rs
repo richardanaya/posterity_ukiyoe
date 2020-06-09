@@ -25,7 +25,7 @@ impl UILayout {
 			let mut lm = lm_ref.borrow_mut();
 			// create a new node for the panel
 			let ln = lm.new_node(style,Vec::new());
-			// get the layout node of of the parent 
+			// get the layout node of of the parent
 			let parent = lm.get_node(parent_node.expect("should have parent_node"));
 			// add a NodeIndex to the parent of this Panel's node
 			parent.children.push(ln);
@@ -34,7 +34,6 @@ impl UILayout {
 				layout_node: ln,
 			}
 		};
-		
 
 		for child in children.iter_mut() {
 			let lm_ref = layout_manager.as_ref().unwrap().clone();

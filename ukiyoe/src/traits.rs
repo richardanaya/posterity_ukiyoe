@@ -15,9 +15,9 @@ pub trait UIElement {
 pub trait Renderer{
 	fn draw_rectangle(&self, r: &Rect);
 	fn get_dimensions(&self) -> Size;
-	fn draw_text(&self, r: &Rect, text:&String);
+	fn draw_text(&self, r: &Rect, text:&String, bold:bool, underline:bool);
 	fn clear(&self) {
-		
+
 	}
 	fn shutdown(&self) {
 

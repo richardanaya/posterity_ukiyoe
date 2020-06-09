@@ -6,6 +6,7 @@ fn main() -> Result<(),&'static str>{
 
 	let mut tb1 = Label::new();
 	tb1.set_text(&String::from("This text is actually supposed to be really intentionally very long"));
+	tb1.set_bold(true);
 
 	let mut h = HBox::new();
 	h.add_child(Panel::new());
@@ -14,6 +15,7 @@ fn main() -> Result<(),&'static str>{
 
 	let mut tb1 = Label::new();
 	tb1.set_text(&String::from("hello world!"));
+	tb1.set_underline(true);
 	h.add_child(tb1);
 
 	let mut v = VBox::new();

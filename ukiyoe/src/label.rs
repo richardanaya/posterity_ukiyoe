@@ -9,7 +9,9 @@ pub struct Label {
 	layout: Option<UILayout>,
 	xalign: f64,
 	yalign: f64,
-	max_width_characters: u32 //in characters, not pixels
+	max_width_characters: u32, //in characters, not pixels
+	bold: bool,
+	underline: bool
 }
 
 impl Label {
@@ -20,7 +22,9 @@ impl Label {
 			layout: None,
 			xalign: 0.5,
 			yalign: 0.5,
-			max_width_characters: 0
+			max_width_characters: 0,
+			bold: false,
+			underline: false
 		}
 	}
 
@@ -30,6 +34,14 @@ impl Label {
 			None => c.attach_layout(None,None)
 		};
 	    self.children.push(Box::new(c));
+	}
+
+	pub fn set_bold(&mut self, bold: bool) {
+		self.bold = bold;
+	}
+
+	pub fn set_underline(&mut self, underline: bool) {
+		self.underline = underline;
 	}
 
 	pub fn set_text(&mut self, text: &String) {
@@ -59,6 +71,8 @@ impl UIElement for Label {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 
+			let mut r = layout.as_rect();
+
 			let mut actual_text: String;
 
 			// what are we actually going to show?
@@ -67,8 +81,6 @@ impl UIElement for Label {
 			} else {
 				actual_text = self.text.chars().take(self.max_width_characters as usize).collect();
 			}
-
-			let mut r = layout.as_rect();
 
 			// make up something about the text size
 			// need to know more about the font to do this
@@ -86,7 +98,7 @@ impl UIElement for Label {
 			r.position.x -= text_width * self.xalign;
 			// todo do this with height
 
-			renderer.draw_text(&r, &actual_text, );
+			renderer.draw_text(&r, &actual_text, self.bold, self.underline);
 
 			// render the children
 			for child in &self.children {
