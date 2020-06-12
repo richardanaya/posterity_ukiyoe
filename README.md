@@ -34,6 +34,21 @@ fn main() {
 }
 ```
 
+## Widgets
+ - visualroot
+ - label
+ - textbox
+ - panel
+ - button
+
+## Layouts
+ - Hbox
+ - Vbox
+
+## Example Renderers
+ - Curses
+ - glfw + opengl4
+
 # License
 
 This project is licensed under either of
