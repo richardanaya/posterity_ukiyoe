@@ -35,7 +35,7 @@ impl VisualRoot {
 		Ok(())
 	}
 
-	pub fn render(&self, renderer: &dyn Renderer){
+	pub fn render(&self, renderer: &mut dyn Renderer){
 		if let Some(r) = &self.element_tree {
 			r.render(renderer)
 		}

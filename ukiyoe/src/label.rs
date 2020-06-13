@@ -56,7 +56,7 @@ impl Label {
 }
 
 impl Element for Label {
-	fn render(&self, renderer: &dyn Renderer) {
+	fn render(&self, renderer: &mut dyn Renderer) {
 		if let Some(layout) = &self.layout {
 
 			let mut r = layout.as_rect();

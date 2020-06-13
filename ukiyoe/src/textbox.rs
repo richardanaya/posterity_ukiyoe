@@ -22,7 +22,7 @@ impl TextBox {
 }
 
 impl Element for TextBox {
-	fn render(&self, renderer: &dyn Renderer){
+	fn render(&self, renderer: &mut dyn Renderer){
 		print!("{:?}", self.text);
 	}
 

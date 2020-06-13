@@ -5,13 +5,13 @@ use std::cell::RefCell;
 use shoji::*;
 
 pub trait Renderer{
-	fn draw_rectangle(&self, r: &Rect);
+	fn draw_rectangle(&mut self, r: &Rect);
 	fn get_dimensions(&self) -> Size;
-	fn draw_text(&self, r: &Rect, text:&String, bold:bool, underline:bool);
-	fn clear(&self) {
+	fn draw_text(&mut self, r: &Rect, text:&String, bold:bool, underline:bool);
+	fn clear(&mut self) {
 
 	}
-	fn shutdown(&self) {
+	fn shutdown(&mut self) {
 
 	}
 	// Future
@@ -20,7 +20,7 @@ pub trait Renderer{
 }
 
 pub trait Element {
-	fn render(&self, renderer: &dyn Renderer);
+	fn render(&self, renderer: &mut dyn Renderer);
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>);
 }
 
