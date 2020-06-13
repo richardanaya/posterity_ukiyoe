@@ -13,9 +13,6 @@ pub use self::color::*;
 mod traits;
 pub use self::traits::*;
 
-mod panel;
-pub use self::panel::*;
-
 mod textbox;
 pub use self::textbox::*;
 

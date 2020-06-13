@@ -19,20 +19,9 @@ pub trait Renderer{
 	// fn draw_triangle(&self);
 }
 
-pub trait Renderable {
+pub trait Element {
 	fn render(&self, renderer: &dyn Renderer);
-}
-
-// todo rename me or refactor
-// TODO why isn't VisualRoot able to use this?
-pub trait CanDoLayoutStuff {
-	fn attach_layout(&mut self,_layout_manager:Option<Rc<RefCell<Shoji>>>,_parent_node:Option<NodeIndex>) {
-		panic!("this should be implemented")
-	}
-}
-
-pub trait CanOwnChildWidgets {
-	fn add_child(&mut self, c:dyn CanDoLayoutStuff);
+	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>);
 }
 
 // TODO how to do propagation?  Maybe these things should return a true/false to indicate that it was handled

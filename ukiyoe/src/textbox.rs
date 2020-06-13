@@ -4,7 +4,6 @@ use std::cell::RefCell;
 use shoji::*;
 
 pub struct TextBox {
-	children: Vec<Box<dyn CanDoLayoutStuff>>,
 	layout: Option<UILayout>,
 	text: String
 }
@@ -12,7 +11,6 @@ pub struct TextBox {
 impl TextBox {
 	pub fn new() -> Self {
 		TextBox {
-			children: Vec::new(),
 			layout: None,
 			text: String::from("")
 		}
@@ -23,25 +21,16 @@ impl TextBox {
 	}
 }
 
-impl Renderable for TextBox {
+impl Element for TextBox {
 	fn render(&self, renderer: &dyn Renderer){
 		print!("{:?}", self.text);
 	}
-}
 
-impl CanDoLayoutStuff for TextBox {
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
 	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle{
 				 direction: Direction::TopBottom
-			 },&mut self.children));
+			 },&mut vec![]));
 		}
 	}
 }
-
-// TODO Implement this
-/*
-impl AcceptsInputs for Button {
-
-}
-*/

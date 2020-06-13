@@ -4,7 +4,6 @@ use std::cell::RefCell;
 use shoji::*;
 
 pub struct Label {
-	children: Vec<Box<dyn CanDoLayoutStuff>>,
 	layout: Option<UILayout>,
 	text: String,
 	xalign: f64,
@@ -18,7 +17,6 @@ pub struct Label {
 impl Label {
 	pub fn new() -> Self {
 		Label {
-			children: Vec::new(),
 			layout: None,
 			text: String::from(""),
 			xalign: 0.5,
@@ -57,7 +55,7 @@ impl Label {
 	}
 }
 
-impl Renderable for Label {
+impl Element for Label {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 
@@ -89,19 +87,12 @@ impl Renderable for Label {
 			// todo do this with height
 
 			renderer.draw_text(&r, &actual_text, self.bold, self.underline);
-
-			// render the children
-			for child in &self.children {
-				child.render(renderer);
-			}
 		}
 	}
-}
 
-impl CanDoLayoutStuff for Label {
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut self.children));
+	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut vec![]));
 		}
 	}
 }

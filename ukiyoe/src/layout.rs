@@ -18,7 +18,7 @@ impl UILayout {
 		Rect::from_numbers(*x,*y,*w,*h)
 	}
 
-	pub fn new(layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>, style:LayoutStyle, children: &mut Vec<Box<dyn CanDoLayoutStuff>>) -> UILayout {
+	pub fn new(layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>, style:LayoutStyle, children: &mut Vec<Box<dyn Element>>) -> UILayout {
 		let l = {
 			let lm_ref = layout_manager.as_ref().expect("should have layout manager").clone();
 			// get a mutable ref of the ref counted layout manager

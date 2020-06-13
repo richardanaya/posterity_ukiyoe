@@ -8,7 +8,7 @@ use shoji::*;
 // HBox will resize children to their desired widths but constrain the height to the parent container height.
 
 pub struct HBox {
-	children: Vec<Box<dyn CanDoLayoutStuff>>,
+	children: Vec<Box<dyn Element>>,
 	layout: Option<UILayout>
 }
 
@@ -19,9 +19,17 @@ impl HBox {
 			layout: None
 		}
 	}
+
+	fn add_child(&mut self, mut c:impl Element+'static) {
+		match &mut self.layout {
+			Some(lm) => c.attach_layout(Some(lm.layout_manager.clone()),Some(lm.layout_node)),
+			None => c.attach_layout(None,None)
+		};
+	    self.children.push(Box::new(c));
+	}
 }
 
-impl Renderable for HBox {
+impl Element for HBox {
 	fn render(&self, renderer: &dyn Renderer){
 		if let Some(layout) = &self.layout {
 			renderer.draw_rectangle(&layout.as_rect());
@@ -32,19 +40,7 @@ impl Renderable for HBox {
 			}
 		}
 	}
-}
 
-impl CanOwnChildWidgets for HBox {
-	fn add_child(&mut self, c:dyn CanDoLayoutStuff) {
-		match &mut self.layout {
-			Some(lm) => c.attach_layout(Some(lm.layout_manager.clone()),Some(lm.layout_node)),
-			None => c.attach_layout(None,None)
-		};
-	    self.children.push(Box::new(c));
-	}
-}
-
-impl CanDoLayoutStuff for HBox {
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
 	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut self.children));

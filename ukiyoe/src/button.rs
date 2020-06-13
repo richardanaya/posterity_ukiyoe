@@ -18,7 +18,6 @@ use shoji::*;
 // radio
 
 pub struct Button {
-	children: Vec<Box<dyn UIElement>>,
 	layout: Option<UILayout>,
 	xalign: f64,
 	yalign: f64,
@@ -55,7 +54,7 @@ impl Button {
 	}
 }
 
-impl Renderable for Button {
+impl Element for Button {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 			renderer.draw_rectangle(&layout.as_rect());
@@ -66,12 +65,10 @@ impl Renderable for Button {
 			}
 		}
 	}
-}
 
-impl CanDoLayoutStuff for Button {
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
-	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut self.children));
+	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&vec![]));
 		}
 	}
 }
