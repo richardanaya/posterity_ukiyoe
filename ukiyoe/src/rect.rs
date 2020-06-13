@@ -1,6 +1,7 @@
 use crate::size::*;
 use crate::point::*;
 
+#[derive(Copy, Clone, Debug)]
 pub struct Rect {
     pub position: Point,
     pub size: Size
