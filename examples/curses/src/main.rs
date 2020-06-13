@@ -9,9 +9,7 @@ fn main() -> Result<(),&'static str>{
 	tb1.set_bold(true);
 
 	let mut h = HBox::new();
-	h.add_child(Panel::new());
 	h.add_child(tb1);
-	h.add_child(Panel::new());
 
 	let mut tb1 = Label::new();
 	tb1.set_text(&String::from("hello world!"));
@@ -19,10 +17,8 @@ fn main() -> Result<(),&'static str>{
 	h.add_child(tb1);
 
 	let mut v = VBox::new();
-	v.add_child(Panel::new());
 
 	let mut h2 = HBox::new();
-	h2.add_child(Panel::new());
 
 	let mut tb2 = Label::new();
 	tb2.set_text(&String::from("Mary had a little lamb, Its fleece was white as snow, And every where that Mary went The lamb was sure to go"));
