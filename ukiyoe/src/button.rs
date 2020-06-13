@@ -76,3 +76,9 @@ impl CanDoLayoutStuff for Button {
 	}
 }
 
+// TODO Implement this
+/*
+impl AcceptsInputs for Button {
+
+}
+*/
