@@ -38,3 +38,10 @@ impl CanDoLayoutStuff for TextBox {
 		}
 	}
 }
+
+// TODO Implement this
+/*
+impl AcceptsInputs for Button {
+
+}
+*/
