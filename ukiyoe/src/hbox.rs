@@ -20,7 +20,7 @@ impl HBox {
 		}
 	}
 
-	fn add_child(&mut self, mut c:impl Element+'static) {
+	pub fn add_child(&mut self, mut c:impl Element+'static) {
 		match &mut self.layout {
 			Some(lm) => c.attach_layout(Some(lm.layout_manager.clone()),Some(lm.layout_node)),
 			None => c.attach_layout(None,None)
