@@ -7,6 +7,9 @@ pub use self::point::*;
 mod rect;
 pub use self::rect::*;
 
+mod color;
+pub use self::color::*;
+
 mod traits;
 pub use self::traits::*;
 

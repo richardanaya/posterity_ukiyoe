@@ -1,5 +1,6 @@
 pub use pancurses::Input;
 use pancurses::{curs_set, endwin, initscr, noecho, Window, start_color, use_default_colors, ColorPair, Attribute};
+use pancurses::{ALL_MOUSE_EVENTS, getmouse, mousemask};
 use ukiyoe::*;
 
 pub struct CursesRenderer {
@@ -13,6 +14,12 @@ impl CursesRenderer {
         curs_set(0);
         start_color();
         use_default_colors();
+
+        // TODO
+        // does this belong in this renderer? Input object maybe?
+        mousemask(ALL_MOUSE_EVENTS, std::ptr::null_mut()); // Listen to all mouse events
+        w.keypad(true); // Set keypad mode
+
         CursesRenderer { window: w }
     }
 
@@ -22,6 +29,19 @@ impl CursesRenderer {
 
     fn draw_character(&self, x: i32, y: i32, c: char) {
         self.window.mvprintw(y, x, c.to_string());
+    }
+
+    fn handle_mouse(&self) {
+        // TODO Write me
+        /*
+        Some(Input::KeyMouse) => {
+            if let Ok(mouse_event) = getmouse() {
+                // mouse_event.x, mouse_event.y),
+
+                // TODO send it to the layout so that the event gets to the right place
+            };
+        }
+        */
     }
 }
 

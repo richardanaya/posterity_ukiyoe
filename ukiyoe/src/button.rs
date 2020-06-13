@@ -55,11 +55,7 @@ impl Button {
 	}
 }
 
-impl UIElement for Button {
-	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
-		return &mut self.children;
-	}
-
+impl Renderable for Button {
 	fn render(&self, renderer: &dyn Renderer) {
 		if let Some(layout) = &self.layout {
 			renderer.draw_rectangle(&layout.as_rect());
@@ -70,7 +66,9 @@ impl UIElement for Button {
 			}
 		}
 	}
+}
 
+impl CanDoLayoutStuff for Button {
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
 		if layout_manager.is_some() {
 	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&mut self.children));

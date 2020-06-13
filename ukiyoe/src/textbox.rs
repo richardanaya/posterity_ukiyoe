@@ -1,7 +1,11 @@
-use crate::traits::*;
+use crate::*;
+use std::rc::Rc;
+use std::cell::RefCell;
+use shoji::*;
 
 pub struct TextBox {
-	children: Vec<Box<dyn UIElement>>,
+	children: Vec<Box<dyn CanDoLayoutStuff>>,
+	layout: Option<UILayout>,
 	text: String
 }
 
@@ -9,12 +13,9 @@ impl TextBox {
 	pub fn new() -> Self {
 		TextBox {
 			children: Vec::new(),
+			layout: None,
 			text: String::from("")
 		}
-	}
-
-	pub fn add_child(&mut self, c:impl UIElement + 'static) {
-	    self.children.push(Box::new(c));
 	}
 
 	pub fn set_text(&mut self, text: &String) {
@@ -22,12 +23,18 @@ impl TextBox {
 	}
 }
 
-impl UIElement for TextBox {
-	fn get_children(&mut self) -> &mut Vec<Box<dyn UIElement>> {
-		return &mut self.children;
-	}
-
-	fn render(&self, _renderer: &dyn Renderer) {
+impl Renderable for TextBox {
+	fn render(&self, renderer: &dyn Renderer){
 		print!("{:?}", self.text);
+	}
+}
+
+impl CanDoLayoutStuff for TextBox {
+	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>) {
+		if layout_manager.is_some() {
+	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle{
+				 direction: Direction::TopBottom
+			 },&mut self.children));
+		}
 	}
 }

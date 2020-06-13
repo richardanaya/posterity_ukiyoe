@@ -39,6 +39,8 @@ fn main() -> Result<(),&'static str>{
 		renderer.clear();
 		root.compute_layout(renderer.get_dimensions())?;
 		root.render(&renderer);
+
+		// TODO move to an input handler / class and subscribe to an event
 		if renderer.getch() == Some(Input::Character('\u{1b}')) {
 			break;
 		}
