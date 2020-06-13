@@ -40,9 +40,7 @@ impl VisualRoot {
 			r.render(renderer)
 		}
 	}
-}
 
-impl AcceptsInputs for VisualRoot {
 	fn on_keyboard(&self, key: u32, scancode: u32, action: u32, modifiers: u32) {
 		panic!("this should be implemented")
 	}

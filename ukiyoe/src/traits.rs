@@ -22,11 +22,9 @@ pub trait Renderer{
 pub trait Element {
 	fn render(&self, renderer: &mut dyn Renderer);
 	fn attach_layout(&mut self,layout_manager:Option<Rc<RefCell<Shoji>>>, parent_node:Option<NodeIndex>);
-}
 
-// TODO how to do propagation?  Maybe these things should return a true/false to indicate that it was handled
-// and not to keep looking for children
-pub trait AcceptsInputs{
+	// TODO how to do propagation?  Maybe these things should return a true/false to indicate that it was handled
+	// and not to keep looking for children
 
 	// if (key == KEY_E && action == PRESS)
     //    activate_airship();

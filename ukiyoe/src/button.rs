@@ -71,11 +71,23 @@ impl Element for Button {
 	 		self.layout = Some(UILayout::new(layout_manager, parent_node, LayoutStyle::default(),&vec![]));
 		}
 	}
-}
 
-// TODO Implement this
-/*
-impl AcceptsInputs for Button {
-
+	fn on_keyboard(&self, key: u32, scancode: u32, action: u32, modifiers: u32) {
+		panic!("this should be implemented")
+	}
+	fn on_character(&self, codepoint: u32) {
+		panic!("this should be implemented")
+	}
+	fn on_mouse_move(&self, xpos: f64, ypos: f64) {
+		panic!("this should be implemented")
+	}
+	fn on_mouse_enter_exit(&self, entered: bool) {
+		panic!("this should be implemented")
+	}
+	fn on_mouse_button(&self, button: i32, action: i32, mods: i32) {
+		panic!("this should be implemented")
+	}
+	fn on_mouse_wheel(&self, xoffset: f64, yoffset: f64) {
+		panic!("this should be implemented")
+	}
 }
-*/
