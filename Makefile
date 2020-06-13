@@ -3,7 +3,7 @@ RENDERERS := "ukiyoe_curses"
 
 .default: build
 
-.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe clean-ukiyoe $(EXAMPLES) $(RENDERERS) run-example-basic run-example-rectangular
+.PHONY: build lint test clean build-ukiyoe lint-ukiyoe test-ukiyoe clean-ukiyoe $(EXAMPLES) $(RENDERERS)
 
 ############## PROJECT TOP LEVEL ##############
 
@@ -48,11 +48,8 @@ $(RENDERERS): build-ukiyoe
 $(EXAMPLES): build-ukiyoe
 	(cd $@; cargo build)
 
-run-example-curses: build
+run-example-curses: examples/curses
 	(cd examples/curses; cargo run;)
 
-run-example-rectangular: build
-	$(MAKE) -C examples/rectangular run
-
-run-example-basic_console: build
-	$(MAKE) -C examples/basic_console run
+run-example-glfw_opengl3: examples/glfw_opengl3
+	(cd examples/glfw_opengl3; cargo run;)
