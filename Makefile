@@ -11,32 +11,32 @@ build: build-ukiyoe $(RENDERERS) $(EXAMPLES)
 
 lint: lint-ukiyoe
 	for dir in $(EXAMPLES); do \
-		$(MAKE) -C $$dir lint; \
+		(cd $$dir; cargo lint;) \
 	done
 
 test: test-ukiyoe
 	for dir in $(EXAMPLES); do \
-		$(MAKE) -C $$dir test; \
+		(cd $$dir; cargo test;) \
 	done
 
 clean: clean-ukiyoe
 	for dir in $(EXAMPLES); do \
-		$(MAKE) -C $$dir clean; \
+		(cd $$dir; cargo clean;) \
 	done
 
 ############## UKIYOE TOP LEVEL ##############
 
 build-ukiyoe:
-	$(MAKE) -C ukiyoe build
+	(cd ukiyoe; cargo build;)
 
 lint-ukiyoe:
-	$(MAKE) -C ukiyoe lint
+	(cd ukiyoe; cargo lint;)
 
 test-ukiyoe:
-	$(MAKE) -C ukiyoe test
+	(cd ukiyoe; cargo test;)
 
 clean-ukiyoe:
-	$(MAKE) -C ukiyoe clean
+	(cd ukiyoe; cargo clean;)
 
 ############## RENDERERS TOP LEVEL ##############
 
@@ -46,10 +46,10 @@ $(RENDERERS): build-ukiyoe
 ############## EXAMPLES ##############
 
 $(EXAMPLES): build-ukiyoe
-	$(MAKE) -C $@
+	(cd $@; cargo build)
 
-run-example-basic: build
-	$(MAKE) -C examples/basic run
+run-example-curses: build
+	(cd examples/curses; cargo run;)
 
 run-example-rectangular: build
 	$(MAKE) -C examples/rectangular run
