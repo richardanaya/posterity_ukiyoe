@@ -1,5 +1,5 @@
 [package]
-name = "basic_console"
+name = "curses"
 version = "0.1.0"
 authors = ["Richard <Richard>", "Darryl T. Agostinelli <dagostinelli@gmail.com>"]
 edition = "2018"
@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 ukiyoe = {path="../../ukiyoe"}
 ukiyoe_curses = {path="../../ukiyoe_curses"}
+log = "0.4"
+simplelog = "^0.7.6"

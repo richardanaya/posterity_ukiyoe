@@ -1,7 +1,11 @@
 pub use pancurses::Input;
 use pancurses::{curs_set, endwin, initscr, noecho, Window, start_color, use_default_colors, ColorPair, Attribute};
 use pancurses::{ALL_MOUSE_EVENTS, getmouse, mousemask};
+use pancurses::*;
 use ukiyoe::*;
+
+use log::*;
+use simplelog::*;
 
 pub struct CursesRenderer {
     window: Window,
@@ -14,34 +18,46 @@ impl CursesRenderer {
         curs_set(0);
         start_color();
         use_default_colors();
-
-        // TODO
-        // does this belong in this renderer? Input object maybe?
         mousemask(ALL_MOUSE_EVENTS, std::ptr::null_mut()); // Listen to all mouse events
         w.keypad(true); // Set keypad mode
+        w.nodelay(true); // getch returns immediately
 
         CursesRenderer { window: w }
-    }
-
-    pub fn getch(&self) -> Option<Input> {
-        self.window.getch()
     }
 
     fn draw_character(&self, x: i32, y: i32, c: char) {
         self.window.mvprintw(y, x, c.to_string());
     }
 
-    fn handle_mouse(&self) {
-        // TODO Write me
-        /*
-        Some(Input::KeyMouse) => {
-            if let Ok(mouse_event) = getmouse() {
-                // mouse_event.x, mouse_event.y),
-
-                // TODO send it to the layout so that the event gets to the right place
-            };
+    pub fn handle_inputs(&self, root: &VisualRoot) {
+        loop {
+            match self.window.getch() {
+                Some(Input::KeyMouse) => {
+                    root.on_mouse_button(0, 0, 0);
+                }
+                Some(Input::Character(c)) => {
+                    root.on_keyboard(0, 0, 0, 0);
+                    root.on_character(0);
+                }
+                Some(input) => {
+                    info!("key: {:?}", input);
+                }
+                None => break
+            }
         }
-        */
+
+        if let Ok(mouse_event) = getmouse() {
+            // convert mouse coords to unit coords
+            let x = mouse_event.x as f64 / self.window.get_max_x() as f64;
+            let y = mouse_event.y as f64 / self.window.get_max_y() as f64;
+            root.on_mouse_move(x, y);
+
+            info!("mouse: {:?}:{:?}", x, y);
+        };
+    }
+
+    pub fn present(&self) {
+        self.window.refresh();
     }
 }
 
@@ -68,9 +84,6 @@ impl Renderer for CursesRenderer {
 		}
 
         //self.window.border(start_x, end_x, end_y, start_y, 10, 10, 10, 10);
-
-        // code smell
-        self.window.refresh();
     }
     fn get_dimensions(&self) -> Size {
         Size {
@@ -106,6 +119,8 @@ impl Renderer for CursesRenderer {
     }
 
     fn clear(&self){
+        // todo what's the difference between clear and erase?
         self.window.clear();
+        //self.window.erase();
     }
 }

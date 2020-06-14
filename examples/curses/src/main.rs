@@ -1,7 +1,32 @@
 use ukiyoe::*;
 use ukiyoe_curses::*;
 
+use log::*;
+use simplelog::*;
+
+use std::fs::File;
+
 fn main() -> Result<(),&'static str>{
+    CombinedLogger::init(
+        vec![
+            WriteLogger::new(LevelFilter::Info, Config::default(), File::create("my_rust_binary.log").unwrap()),
+        ]
+    ).unwrap();
+/*
+    CombinedLogger::init(vec![
+        #[cfg(feature = "termcolor")]
+        TermLogger::new(LevelFilter::Warn, Config::default(), TerminalMode::Mixed),
+        #[cfg(not(feature = "termcolor"))]
+        SimpleLogger::new(LevelFilter::Warn, Config::default()),
+        WriteLogger::new(
+            LevelFilter::Info,
+            Config::default(),
+            File::create("my_rust_binary.log").unwrap(),
+        ),
+    ])
+    .unwrap();
+*/
+
 	let mut root = VisualRoot::new();
 
 	let mut tb1 = Label::new();
@@ -32,14 +57,13 @@ fn main() -> Result<(),&'static str>{
 	root.set_root(v)?;
 	let renderer = CursesRenderer::new();
 	loop {
-		renderer.clear();
-		root.compute_layout(renderer.get_dimensions())?;
-		root.render(&renderer);
+		renderer.handle_inputs(&root);
 
-		// TODO move to an input handler / class and subscribe to an event
-		if renderer.getch() == Some(Input::Character('\u{1b}')) {
-			break;
-		}
+		root.compute_layout(renderer.get_dimensions())?;
+
+		renderer.clear();
+		root.render(&renderer);
+		renderer.present();
 	}
 	renderer.shutdown();
 	Ok(())

@@ -9,3 +9,5 @@ edition = "2018"
 [dependencies]
 ukiyoe = {path="../ukiyoe"}
 pancurses = "0.16"
+log = "0.4"
+simplelog = "^0.7.6"
