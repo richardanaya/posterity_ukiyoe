@@ -55,14 +55,14 @@ fn main() -> Result<(),&'static str>{
 	v.add_child(h);
 
 	root.set_root(v)?;
-	let renderer = CursesRenderer::new();
+	let mut renderer = CursesRenderer::new();
 	loop {
 		renderer.handle_inputs(&root);
 
 		root.compute_layout(renderer.get_dimensions())?;
 
 		renderer.clear();
-		root.render(&renderer);
+		root.render(&mut renderer);
 		renderer.present();
 	}
 	renderer.shutdown();
