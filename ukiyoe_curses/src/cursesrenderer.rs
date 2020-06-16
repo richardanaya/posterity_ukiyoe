@@ -37,7 +37,7 @@ impl CursesRenderer {
                 }
                 Some(Input::Character(c)) => {
                     root.on_keyboard(0, 0, 0, 0);
-                    root.on_character(0);
+                    root.on_character(c as u32);
                 }
                 Some(input) => {
                     info!("key: {:?}", input);
@@ -62,7 +62,7 @@ impl CursesRenderer {
 }
 
 impl Renderer for CursesRenderer {
-    fn draw_rectangle(&self, r: &Rect) {
+    fn draw_rectangle(&mut self, r: &Rect) {
 		let start_x = r.position.x as i32;
 		let end_x = (r.position.x + r.size.width) as i32;
 		let start_y = r.position.y as i32;
@@ -91,7 +91,7 @@ impl Renderer for CursesRenderer {
             height: self.window.get_max_y() as f64,
         }
     }
-    fn draw_text(&self, r: &Rect, text:&String, bold:bool, underline:bool) {
+    fn draw_text(&mut self, r: &Rect, text:&String, bold:bool, underline:bool) {
 
         //self.window.attrset(ColorPair(4));
 
@@ -114,11 +114,11 @@ impl Renderer for CursesRenderer {
         self.window.attroff(Attribute::Bold);
     }
 
-    fn shutdown(&self){
+    fn shutdown(&mut self){
         endwin();
     }
 
-    fn clear(&self){
+    fn clear(&mut self){
         // todo what's the difference between clear and erase?
         self.window.clear();
         //self.window.erase();
